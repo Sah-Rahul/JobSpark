@@ -50,7 +50,7 @@ export const postJob = async (req, res) => {
       experienceLevel,
       position,
       company: companyId,
-      created_by: req.id,
+      created_by: req.userId,
     });
 
     return res.status(201).json({
@@ -121,7 +121,7 @@ export const getJobById = async (req, res) => {
 
 export const getAdminJobs = async (req, res) => {
   try {
-    const jobs = await Job.find({ created_by: req.id }).populate(
+    const jobs = await Job.find({ created_by: req.userId }).populate(
       "company",
       "name"
     );

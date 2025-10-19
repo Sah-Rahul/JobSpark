@@ -59,7 +59,6 @@ const Navbar = () => {
       : `https://avatar.iran.liara.run/public/boy/${encodeURIComponent(
           user?.fullName || "User"
         )}`;
-         
   };
 
   return (
@@ -79,15 +78,25 @@ const Navbar = () => {
           {/* Desktop Navigation and Auth Buttons */}
           <div className="hidden md:flex items-center space-x-7">
             <div className="hidden md:flex items-center space-x-6">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.href}
-                  className="text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium flex items-center space-x-1"
-                >
-                  <span>{link.name}</span>
-                </Link>
-              ))}
+              {user && user.role === "recruiter" ? (
+                <>
+                  <Link to={"admin/companies"}>companies</Link>
+                  <Link to="/admin/jobs">Jobs</Link>
+
+                </>
+              ) : (
+                <>
+                  {navLinks.map((link) => (
+                    <Link
+                      key={link.name}
+                      to={link.href}
+                      className="text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium flex items-center space-x-1"
+                    >
+                      <span>{link.name}</span>
+                    </Link>
+                  ))}
+                </>
+              )}
             </div>
 
             {user ? (
@@ -112,18 +121,23 @@ const Navbar = () => {
                       <p className="text-xs text-gray-500">{user.email}</p>
                     </div>
                   </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => navigate("/profile")}>
-                    <User className="mr-2 h-4 w-4" />
-                    <span>Profile</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => navigate("/my-applications")}
-                  >
-                    <Briefcase className="mr-2 h-4 w-4" />
-                    <span>My Applications</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
+                  {user && user.role === "student" && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={() => navigate("/profile")}>
+                        <User className="mr-2 h-4 w-4" />
+                        <span>Profile</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => navigate("/my-applications")}
+                      >
+                        <Briefcase className="mr-2 h-4 w-4" />
+                        <span>My Applications</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                    </>
+                  )}
+
                   <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>

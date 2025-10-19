@@ -129,7 +129,6 @@ export const loginUser = async (req, res) => {
 };
 
 export const logoutUser = async (req, res) => {
- 
   try {
     return res
       .status(200)
@@ -154,7 +153,7 @@ export const logoutUser = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   try {
-    const userId = req.id;
+    const userId = req.userId;
 
     if (!userId) {
       return res.status(401).json({
@@ -233,6 +232,3 @@ export const updateProfile = async (req, res) => {
     });
   }
 };
-
- 
- 

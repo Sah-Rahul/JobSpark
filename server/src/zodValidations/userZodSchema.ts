@@ -6,6 +6,7 @@ export const SignupSchema = z
     userName: z.string().min(3, "Username must be at least 3 characters"),
     role: z.enum(["employee", "recruiter"]),
     email: z.string().email("Invalid email"),
+    isVerified: z.boolean().default(false),
     password: z
       .string()
       .min(8, "Password must be at least 8 characters")
@@ -36,3 +37,34 @@ export const LoginSchema = z.object({
 });
 
 export type LoginType = z.infer<typeof LoginSchema>;
+
+export const VerifyOtpSchema = z.object({
+  userId: z.string(),
+  otp: z.string().length(6, "OTP must be 6 digits"),
+});
+
+export type VerifyOtpType = z.infer<typeof VerifyOtpSchema>;
+
+export const ForgotPasswordSchema = z.object({
+  email: z.string().email("Valid email required"),
+});
+export type ForgotPasswordInput = z.infer<typeof ForgotPasswordSchema>;
+
+export const ResetPasswordSchema = z.object({
+  newPassword: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
+      "Password must contain uppercase, lowercase, number, and special character"
+    ),
+  confirmPassword: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
+      "Password must contain uppercase, lowercase, number, and special character"
+    ),
+});
+
+export type ResetPasswordType = z.infer<typeof ResetPasswordSchema>;

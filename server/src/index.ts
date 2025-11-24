@@ -4,7 +4,7 @@ import express, { Request, Response } from "express";
 import { connectDB } from "./config/db";
 import errorMiddleware from "./middleware/Error.middleware";
 import cookieParser from "cookie-parser";
-
+import cors from "cors"
 
 
 import userRouter from "./routes/user.routes";
@@ -19,6 +19,10 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({
+  origin:process.env.FRONTEND_URL,
+  credentials:true
+}))
 app.use(express.urlencoded({ extended: true }));
 
 

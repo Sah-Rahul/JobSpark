@@ -1,13 +1,27 @@
-import { Button } from "./components/ui/button";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Signup from "./Auth/Signup";
+import Login from "./Auth/Login";
+import { Toaster } from "react-hot-toast";
+import EmailVerification from "./Auth/EmailVerification";
+import ForgetPassword from "./Auth/ForgetPassword";
+import ResetPassword from "./Auth/ResetPassword";
+import Home from "./components/Home";
 
 const App = () => {
   return (
-    <div>
-      <h1 className="text-3xl font-bold underline">
-        Hello world!
-        <Button>click me</Button>
-      </h1>
-    </div>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/verify-email/:id" element={<EmailVerification />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgetPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+        </Routes>
+        <Toaster />
+      </BrowserRouter>
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 import {Router} from "express"
-import { forgotPassword, logoutUser, resendOtp, userLogin, userRegister, verifyEmails } from "../controller/user.controller"
+import { forgotPassword, logoutUser, resendOtp, resetPassword, userLogin, userRegister, verifyEmails } from "../controller/user.controller"
 import { isAuthenticated } from "../middleware/auth.middleware"
 
 
@@ -13,6 +13,9 @@ userRouter.post('/verify-email', verifyEmails)
 userRouter.post('/forgot-Password', forgotPassword)
 userRouter.post('/logout',isAuthenticated, logoutUser)
 userRouter.post('/resend-otp',isAuthenticated, resendOtp)
+userRouter.post("/reset-password/:token", resetPassword);
+
+
 
 
 

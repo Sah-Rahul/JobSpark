@@ -3,17 +3,20 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ForgotPasswordSchema } from "@/ZodValidation/authZodSchema";
+import { forgotPassword } from "@/Api/authApi";
+import toast from "react-hot-toast";
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
     setError("");
   };
 
-  const handleReset = () => {
+  const handleReset = async () => {
     const result = ForgotPasswordSchema.safeParse({ email });
     if (!result.success) {
       setError(result.error.issues[0].message);
@@ -21,7 +24,19 @@ const ForgetPassword = () => {
     }
 
     setError("");
-    console.log("Reset password for:", email);
+
+    try {
+      setLoading(true);
+      await forgotPassword(email);
+      toast.success("Password reset link sent! Please check your email.");
+    } catch (error: any) {
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to send password reset link. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -42,9 +57,16 @@ const ForgetPassword = () => {
             value={email}
             onChange={handleChange}
           />
-          {error && <p className="text-blue-500 cursor-pointer text-sm">{error}</p>}
-          <Button className="w-full cursor-pointer" onClick={handleReset}>
-            Reset Password
+          {error && (
+            <p className="text-rose-500 cursor-pointer text-sm">{error}</p>
+          )}
+
+          <Button
+            type="submit"
+            className="w-full cursor-pointer"
+            onClick={handleReset}
+          >
+            {loading ? "Reseting ..." : "  Reset Password "}
           </Button>
         </div>
 

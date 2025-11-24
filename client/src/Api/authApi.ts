@@ -33,3 +33,26 @@ export const resendOtp = async () => {
   const { data } = await axiosInstance.post(`/api/v1/user/resend-otp`);
   return data;
 };
+
+export const forgotPassword = async (email: string) => {
+  const { data } = await axiosInstance.post(`/api/v1/user/forgot-Password`, {
+    email,
+  });
+  return data;
+};
+
+export const resetPassword = async (
+  token: string,
+  newPassword: string,
+  confirmPassword: string
+) => {
+  const { data } = await axiosInstance.post(
+    `/api/v1/user/reset-password/${token}`,
+    {
+      newPassword,
+      confirmPassword,
+    }
+  );
+  return data;
+};
+

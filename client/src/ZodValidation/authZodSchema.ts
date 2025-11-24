@@ -1,6 +1,7 @@
 import { z } from "zod";
 
-export const SignupSchema = z.object({
+export const SignupSchema = z
+  .object({
     fullName: z.string().min(3, "Name must be at least 3 characters"),
     userName: z.string().min(3, "Username must be at least 3 characters"),
     role: z.enum(["employee", "recruiter"]),
@@ -48,8 +49,9 @@ export const ForgotPasswordSchema = z.object({
 });
 export type ForgotPasswordInput = z.infer<typeof ForgotPasswordSchema>;
 
-export const ResetPasswordSchema = z.object({
-    password: z
+export const ResetPasswordSchema = z
+  .object({
+    newPassword: z
       .string()
       .min(8, "Password must be at least 8 characters")
       .regex(
@@ -58,15 +60,11 @@ export const ResetPasswordSchema = z.object({
       ),
     confirmPassword: z
       .string()
-      .min(6, "Password must be at least 6 characters")
-      .regex(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
-        "Password must contain uppercase, lowercase, number, and special character"
-      ),
+      .min(8, "Password must be at least 8 characters"),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.newPassword === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
 
-export type ResetPasswordInput = z.infer<typeof ResetPasswordSchema>;
+export type ResetPasswordType = z.infer<typeof ResetPasswordSchema>;

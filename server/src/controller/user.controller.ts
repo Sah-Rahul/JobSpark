@@ -18,6 +18,7 @@ import { sendToken } from "../utils/SendToken";
 import { sendEmail } from "../services/sendEmail";
 import { verifyEmail } from "../services/verifyEmail";
 import { forgotPasswordEmailTemplate } from "../services/forgotPassword";
+import { resetPasswordEmail } from "../services/resetPassword";
 
 interface AuthRequest extends Request {
   user?: any;
@@ -195,47 +196,6 @@ export const userLogin = TryCacthError(async (req: Request, res: Response) => {
   });
 });
 
-export const forgotPassword = TryCacthError(
-  async (req: Request, res: Response) => {
-    const parsed = ForgotPasswordSchema.safeParse(req.body);
-    if (!parsed.success) {
-      const zodError = parsed.error;
-      const formattedErrors = zodError.issues.map(
-        (issue) => `${issue.path.join(".")}: ${issue.message}`
-      );
-      throw new ApiError(400, "Invalid input", formattedErrors);
-    }
-
-    const { email } = parsed.data;
-
-    const user = await UserModel.findOne({ email });
-    if (!user) {
-      throw new ApiError(400, "User doesn't exist with this email.");
-    }
-
-    const otp = crypto.randomInt(100000, 999999).toString();
-
-    const hashedOtp = await bcrypt.hash(otp, 10);
-
-    user.resetPasswordToken = hashedOtp;
-    user.resetPasswordExpires = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
-    await user.save();
-
-    const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${otp}`;
-
-    await sendEmail({
-      email: user.email,
-      subject: "Reset Your Password - Nexonic",
-      html: forgotPasswordEmailTemplate({ resetPasswordUrl: resetUrl }),
-    });
-
-    return res.status(200).json({
-      success: true,
-      message: "Password reset link sent to your email.",
-    });
-  }
-);
-
 export const logoutUser = TryCacthError(async (req: Request, res: Response) => {
   res.clearCookie("token", {
     httpOnly: true,
@@ -295,6 +255,100 @@ export const resendOtp = TryCacthError(
           200,
           {},
           "Verification code has been resent to your email"
+        )
+      );
+  }
+);
+
+export const forgotPassword = TryCacthError(async (req, res) => {
+  const parsed = ForgotPasswordSchema.safeParse(req.body);
+  if (!parsed.success) {
+    throw new ApiError(400, "Invalid input", parsed.error.issues);
+  }
+
+  const { email } = parsed.data;
+
+  const user = await UserModel.findOne({ email });
+  if (!user) {
+    throw new ApiError(400, "User doesn't exist with this email.");
+  }
+
+  // Generate raw token
+  const resetToken = crypto.randomBytes(32).toString("hex");
+
+  // Hash the token for DB
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  // Save hashed token + expiry
+  user.resetPasswordToken = hashedToken;
+  user.resetPasswordExpires = new Date(Date.now() + 15 * 60 * 1000); // ✔ Date object
+  await user.save();
+
+  // Link to be sent to user
+  const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+
+  await sendEmail({
+    email: user.email,
+    subject: "Reset Your Password - TalentHub",
+    html: resetPasswordEmail({
+      userName: user.fullName,
+      resetUrl,
+    }),
+  });
+
+  return res.status(200).json({
+    success: true,
+    message: "Password reset link sent to your email.",
+  });
+});
+
+export const resetPassword = TryCacthError(
+  async (req: Request, res: Response) => {
+    const { token } = req.params;
+
+    if (!token) {
+      throw new ApiError(400, "Missing reset token");
+    }
+
+    const validation = ResetPasswordSchema.safeParse(req.body);
+    if (!validation.success) {
+      throw new ApiError(400, "Validation failed", validation.error.issues);
+    }
+
+    const { newPassword, confirmPassword } = validation.data;
+
+    if (newPassword !== confirmPassword) {
+      throw new ApiError(400, "Passwords do not match");
+    }
+
+    // Hash token to compare with DB
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+    const user = await UserModel.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpires: { $gt: new Date() }, // ✔ Date, not number
+    });
+
+    if (!user) {
+      throw new ApiError(400, "Invalid or expired password reset token");
+    }
+
+    user.password = await bcrypt.hash(newPassword, 10);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+
+    await user.save();
+
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          null,
+          "Password reset successful. Please login again."
         )
       );
   }

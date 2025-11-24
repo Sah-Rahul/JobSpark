@@ -57,8 +57,8 @@ const Login = () => {
       return;
     }
     try {
-      await loginUser(formData.email, formData.password);
-      toast.success("Email verified successfully!");
+      const res = await loginUser(formData.email, formData.password);
+      toast.success(`Welcome back ${res.user?.fullName}`);
       navigate("/");
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Verification failed!");
@@ -117,7 +117,11 @@ const Login = () => {
                 <Eye className="w-5 h-5" />
               )}
             </button>
-
+            <div className="flex items-center justify-end mt-2">
+              <Link to={"/forgot-password"} className="text-sm">
+                Forgot password
+              </Link>
+            </div>
             {errors.password && (
               <p className="text-red-500 text-sm">{errors.password}</p>
             )}

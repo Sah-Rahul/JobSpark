@@ -86,7 +86,7 @@ export const verifyEmail = ({
                             </span>
                           </div>
                           <p style="font-size: 13px; color: #9CA3AF; margin: 15px 0 0;">
-                            This code expires in <strong style="color: #00ADB5;">30 minutes</strong>
+                            This code expires in <strong style="color: #00ADB5;">15 minutes</strong>
                           </p>
                         </div>
 

@@ -19,6 +19,10 @@ import { sendEmail } from "../services/sendEmail";
 import { verifyEmail } from "../services/verifyEmail";
 import { forgotPasswordEmailTemplate } from "../services/forgotPassword";
 
+interface AuthRequest extends Request {
+  user?: any;
+}
+
 export const userRegister = TryCacthError(
   async (req: Request, res: Response) => {
     const parsed = SignupSchema.safeParse(req.body);
@@ -244,3 +248,54 @@ export const logoutUser = TryCacthError(async (req: Request, res: Response) => {
     message: "Logged out successfully",
   });
 });
+
+export const resendOtp = TryCacthError(
+  async (req: AuthRequest, res: Response) => {
+    const userId = req.user?.id;
+
+    if (!userId) {
+      throw new ApiError(401, "Unauthorized");
+    }
+
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      throw new ApiError(404, "User not found");
+    }
+
+    if (user.isVerified) {
+      throw new ApiError(400, "Email is already verified");
+    }
+
+    await OtpModel.deleteMany({ userId: user._id });
+
+    const otp = crypto.randomInt(100000, 999999).toString();
+
+    await OtpModel.create({
+      userId: user._id,
+      otp,
+      expiresAt: new Date(Date.now() + 15 * 60 * 1000), // 15 minutes
+    });
+
+    const verificationEmailHtml = verifyEmail({
+      userName: user.fullName,
+      verificationUrl: `${process.env.FRONTEND_URL}/verify-email/${user._id}`,
+      verificationCode: otp,
+    });
+
+    await sendEmail({
+      email: user.email,
+      subject: "Verify Your Email - Talenthub",
+      html: verificationEmailHtml,
+    });
+
+    res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          {},
+          "Verification code has been resent to your email"
+        )
+      );
+  }
+);

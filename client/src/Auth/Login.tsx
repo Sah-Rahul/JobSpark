@@ -3,10 +3,14 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { LoginSchema } from "@/ZodValidation/authZodSchema";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { loginUser } from "@/Api/authApi";
+import toast from "react-hot-toast";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -43,12 +47,23 @@ const Login = () => {
     validate(data);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     validate(formData);
 
-    if (Object.keys(errors).length === 0) {
-      console.log("LOGIN DATA:", formData);
+    const result = LoginSchema.safeParse(formData);
+    if (!result.success) {
+      toast.error("Fix the errors before submitting.");
+      return;
+    }
+    try {
+      await loginUser(formData.email, formData.password);
+      toast.success("Email verified successfully!");
+      navigate("/");
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Verification failed!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -109,7 +124,7 @@ const Login = () => {
           </div>
 
           <Button type="submit" className="w-full cursor-pointer">
-            Login →
+            {loading ? "Logging in..." : " Login →"}
           </Button>
         </form>
       </div>

@@ -20,3 +20,16 @@ export const verifyEmail = async (userId: string, otp: string) => {
   });
   return data;
 };
+
+export const loginUser = async (email: string, password: string) => {
+  const { data } = await axiosInstance.post(`/api/v1/user/login`, {
+    email,
+    password,
+  });
+  return data;
+};
+
+export const resendOtp = async () => {
+  const { data } = await axiosInstance.post(`/api/v1/user/resend-otp`);
+  return data;
+};

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { VerifyOtpSchema } from "@/ZodValidation/authZodSchema";
 import toast from "react-hot-toast";
-import { verifyEmail } from "@/Api/authApi";
+import { resendOtp, verifyEmail } from "@/Api/authApi";
 import { useNavigate, useParams } from "react-router-dom";
 
 const EmailVerification = () => {
@@ -12,6 +12,7 @@ const EmailVerification = () => {
   const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);  
 
   const handleChange = (value: string, index: number) => {
     if (value.length > 1) return;
@@ -47,10 +48,18 @@ const EmailVerification = () => {
     }
   };
 
-  const handleResend = () => {
-    console.log("Resend OTP clicked");
+  const handleResend = async () => {
+    setResendLoading(true);  
     try {
-    } catch (error) {}
+      await resendOtp();
+      toast.success("Resend code sent to your email!");
+    } catch (error: any) {
+      toast.error(
+        error.response?.data?.message || "Failed to send resend code!"
+      );
+    } finally {
+      setResendLoading(false); 
+    }
   };
 
   return (
@@ -93,8 +102,9 @@ const EmailVerification = () => {
         <button
           className="text-blue-600 cursor-pointer underline text-sm hover:text-blue-800 transition"
           onClick={handleResend}
+          disabled={resendLoading}
         >
-          Resend OTP
+          {resendLoading ? "Resending..." : "Resend OTP"}
         </button>
       </div>
     </div>

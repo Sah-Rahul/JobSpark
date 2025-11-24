@@ -71,7 +71,6 @@ const Signup = () => {
 
     try {
       const res = await signupUser(formData);
-      console.log(res.user.id);
       toast.success("Signup successful!");
       navigate(`/verify-email/${res.user?.id}`);
     } catch (error: any) {

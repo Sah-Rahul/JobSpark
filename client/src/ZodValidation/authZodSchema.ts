@@ -1,7 +1,6 @@
 import { z } from "zod";
 
-export const SignupSchema = z
-  .object({
+export const SignupSchema = z.object({
     fullName: z.string().min(3, "Name must be at least 3 characters"),
     userName: z.string().min(3, "Username must be at least 3 characters"),
     role: z.enum(["employee", "recruiter"]),
@@ -49,8 +48,7 @@ export const ForgotPasswordSchema = z.object({
 });
 export type ForgotPasswordInput = z.infer<typeof ForgotPasswordSchema>;
 
-export const ResetPasswordSchema = z
-  .object({
+export const ResetPasswordSchema = z.object({
     password: z
       .string()
       .min(8, "Password must be at least 8 characters")

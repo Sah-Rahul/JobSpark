@@ -2,10 +2,16 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { VerifyOtpSchema } from "@/ZodValidation/authZodSchema";
+import toast from "react-hot-toast";
+import { verifyEmail } from "@/Api/authApi";
+import { useNavigate, useParams } from "react-router-dom";
 
 const EmailVerification = () => {
+  const navigate = useNavigate();
+  const { id: userId } = useParams<{ id: string }>();
   const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
   const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (value: string, index: number) => {
     if (value.length > 1) return;
@@ -20,21 +26,31 @@ const EmailVerification = () => {
     }
   };
 
-  const handleVerify = () => {
+  const handleVerify = async () => {
     const otpValue = otp.join("");
-
     const result = VerifyOtpSchema.safeParse({ otp: otpValue });
     if (!result.success) {
       setError(result.error.issues[0].message);
       return;
     }
-
     setError("");
-    console.log("Entered OTP is valid:", otpValue);
+    setLoading(true);
+
+    try {
+      await verifyEmail(userId!, otpValue);
+      toast.success("Email verified successfully!");
+      navigate("/login");
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Verification failed!");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleResend = () => {
     console.log("Resend OTP clicked");
+    try {
+    } catch (error) {}
   };
 
   return (
@@ -66,8 +82,12 @@ const EmailVerification = () => {
 
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
-        <Button className="cursor-pointer w-full  mb-4" onClick={handleVerify}>
-          Verify My Account
+        <Button
+          className="cursor-pointer w-full mb-4"
+          onClick={handleVerify}
+          disabled={loading}
+        >
+          {loading ? "Verifying..." : "Verify My Account"}
         </Button>
 
         <button

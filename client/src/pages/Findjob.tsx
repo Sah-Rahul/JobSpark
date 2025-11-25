@@ -94,7 +94,7 @@ useEffect(() =>{
 },[])
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="bg-gray-900 h-76 -mt-13 flex items-center justify-center text-white py-12 px-4">
+      <div className="bg-gray-900 h-76   flex items-center justify-center text-white py-12 px-4">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold mb-2">Find Jobs</h1>
           <p className="text-gray-400">Showing 6 of 10 results</p>

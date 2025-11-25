@@ -83,7 +83,7 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <section className="h-76 -mt-13  bg-linear-to-br from-blue-600 via-blue-700 to-indigo-800 text-white py-20 px-4">
+      <section className="h-76    bg-linear-to-br from-blue-600 via-blue-700 to-indigo-800 text-white py-20 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
             Get In Touch

@@ -9,7 +9,6 @@ const Layout = () => {
       <div className="pt-14">
         <Outlet />
       </div>
-
       <Footer />
     </div>
   );

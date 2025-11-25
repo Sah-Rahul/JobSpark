@@ -16,11 +16,10 @@ const Footer = () => {
           </div>
           <div>
             <span className="block font-semibold text-gray-300">
-              Call now: <span className="text-white">(319) 555-0115</span>
+              Call now: <span className="text-white">(+977) 9877445500</span>
             </span>
             <address className="text-xs text-gray-500 mt-1 not-italic">
-              6391 Elgin St. Celina, Delaware 10299, New York, United States of
-              America
+              New Road Baneshwor, kathmandu Nepal
             </address>
           </div>
         </div>

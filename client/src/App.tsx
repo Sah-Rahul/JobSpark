@@ -7,6 +7,9 @@ import ForgetPassword from "./Auth/ForgetPassword";
 import ResetPassword from "./Auth/ResetPassword";
 import Layout from "./components/Layout";
 import Hero from "./components/Hero";
+import Findjob from "./pages/Findjob";
+import Contact from "./components/Contact";
+import About from "./components/About";
 
 const App = () => {
   return (
@@ -21,6 +24,10 @@ const App = () => {
 
           <Route path="/" element={<Layout />}>
             <Route index element={<Hero />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="find-job" element={<Findjob />} />
+
           </Route>
         </Routes>
         <Toaster />

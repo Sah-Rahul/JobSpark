@@ -17,6 +17,11 @@ import PostJob from "./components/Admin/PostJob";
 import Settings from "./components/Admin/Settings";
 import PlansAndBilling from "./components/Admin/PlansAndBilling";
 import SavedCandidates from "./components/Admin/SavedCandidates";
+import UserLayout from "./pages/UserAdmin/UserLayout";
+import UserDashboard from "./pages/UserAdmin/UserDashboard";
+import AppliedJobs from "./pages/UserAdmin/AppliedJobs";
+import Favorites from "./pages/UserAdmin/Favorites";
+import Setting from "./pages/UserAdmin/Setting";
  
 
 const App = () => {
@@ -37,7 +42,13 @@ const App = () => {
           </Route>
            
 
-             
+             // Recrutier admin dashboard
+          <Route path="/" element={<UserLayout />}>
+            <Route path="/user/dashboard" element={<UserDashboard />} />
+            <Route path="/user/applied" element={<AppliedJobs />} />
+            <Route path="/user/favorites" element={<Favorites />} />
+            <Route path="/user/settings" element={<Setting />} />
+          </Route>
 
 
 

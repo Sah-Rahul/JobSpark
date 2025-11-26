@@ -37,7 +37,6 @@ const JobList = () => {
             key={i}
             className="grid grid-cols-1 lg:grid-cols-4 items-center gap-4 border-b pb-4"
           >
-            {/* Job Info */}
             <div>
               <h4 className="font-semibold">{job.title}</h4>
               <p className="text-gray-500 text-sm">
@@ -45,7 +44,6 @@ const JobList = () => {
               </p>
             </div>
 
-            {/* Status */}
             <Badge
               className={
                 job.status === "Active"
@@ -56,12 +54,10 @@ const JobList = () => {
               {job.status}
             </Badge>
 
-            {/* Applications */}
             <div className="text-gray-600 text-sm">
               {job.applications} Applications
             </div>
 
-            {/* Actions */}
             <div className="flex justify-end">
               <DropdownMenu>
                 <DropdownMenuTrigger>

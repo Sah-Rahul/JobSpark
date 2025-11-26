@@ -1,19 +1,15 @@
 import { Card, CardContent } from "@/components/ui/card";
 import JobList from "./JobList";
- 
 
 const Dashboard = () => {
   return (
     <div className="space-y-6">
-
-      {/* Greeting + Stat Cards */}
       <div>
         <h2 className="text-xl font-semibold">Hello, Instagram</h2>
         <p className="text-gray-500 text-sm">
           Here is your daily activities and applications
         </p>
 
-        {/* Stats row */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
           <Card>
             <CardContent className="p-4">
@@ -31,7 +27,6 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Recently Posted Jobs */}
       <JobList />
     </div>
   );

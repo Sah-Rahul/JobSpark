@@ -10,6 +10,14 @@ import Hero from "./components/Hero";
 import Findjob from "./pages/Findjob";
 import Contact from "./components/Contact";
 import About from "./components/About";
+import AdminLayout from "./components/Admin/AdminLayout";
+import Dashboard from "./components/Admin/Dashboard";
+import EmployerProfile from "./components/Admin/EmployerProfile";
+import PostJob from "./components/Admin/PostJob";
+import Settings from "./components/Admin/Settings";
+import PlansAndBilling from "./components/Admin/PlansAndBilling";
+import SavedCandidates from "./components/Admin/SavedCandidates";
+ 
 
 const App = () => {
   return (
@@ -21,13 +29,33 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgetPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
-
           <Route path="/" element={<Layout />}>
             <Route index element={<Hero />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="find-job" element={<Findjob />} />
+          </Route>
+           
 
+             
+
+
+
+          // Recrutier admin dashboard
+          <Route path="/" element={<AdminLayout />}>
+            <Route path="/admin/dashboard" element={<Dashboard />} />
+            <Route
+              path="/admin/employer-profile"
+              element={<EmployerProfile />}
+            />
+            <Route path="/admin/post-job" element={<PostJob />} />
+            <Route path="/admin/my-job" element={<PostJob />} />
+            <Route
+              path="/admin/saved-candidated"
+              element={<SavedCandidates />}
+            />
+            <Route path="/admin/plans-billing" element={<PlansAndBilling />} />
+            <Route path="/admin/settings" element={<Settings />} />
           </Route>
         </Routes>
         <Toaster />

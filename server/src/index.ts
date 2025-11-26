@@ -8,6 +8,7 @@ import cors from "cors"
 
 
 import userRouter from "./routes/user.routes";
+import companyRouter from "./routes/company.routes";
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.use('/api/v1/user', userRouter)
+app.use('/api/v1/company', companyRouter)
 
 
 app.use(errorMiddleware)

@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { ApiError } from "../utils/ApiError";
-import TryCacthError from "../utils/TryCacth";
 import jwt from "jsonwebtoken";
+import TryCacthError from "../utils/TryCacth";
+import { ApiError } from "../utils/ApiError";
 
-interface CustomRequest extends Request {
+export interface CustomRequest extends Request {
   user?: any;
 }
 
@@ -16,7 +16,6 @@ export const isAuthenticated = TryCacthError(
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY as string);
-
     req.user = decoded;
 
     next();

@@ -273,21 +273,17 @@ export const forgotPassword = TryCacthError(async (req, res) => {
     throw new ApiError(400, "User doesn't exist with this email.");
   }
 
-  // Generate raw token
   const resetToken = crypto.randomBytes(32).toString("hex");
 
-  // Hash the token for DB
   const hashedToken = crypto
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
 
-  // Save hashed token + expiry
   user.resetPasswordToken = hashedToken;
-  user.resetPasswordExpires = new Date(Date.now() + 15 * 60 * 1000); // ✔ Date object
+  user.resetPasswordExpires = new Date(Date.now() + 15 * 60 * 1000);
   await user.save();
 
-  // Link to be sent to user
   const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
   await sendEmail({
@@ -324,12 +320,11 @@ export const resetPassword = TryCacthError(
       throw new ApiError(400, "Passwords do not match");
     }
 
-    // Hash token to compare with DB
     const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
     const user = await UserModel.findOne({
       resetPasswordToken: hashedToken,
-      resetPasswordExpires: { $gt: new Date() }, // ✔ Date, not number
+      resetPasswordExpires: { $gt: new Date() },
     });
 
     if (!user) {

@@ -59,6 +59,11 @@ const companySchema = new Schema(
       type: String,
       default: "",
     },
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   { timestamps: true }
 );

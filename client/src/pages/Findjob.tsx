@@ -87,6 +87,29 @@ const jobs = [
   },
 ];
 
+const Category = [
+  "Engineering",
+  "Civil Engineering",
+  "Mechanical Engineering",
+  "Electrical Engineering",
+  "Data Science",
+  "Marketing",
+  "Design",
+  "Sales",
+  "Customer Support",
+  "Human Resources",
+  "Finance",
+  "Operations",
+  "Product Management",
+  "Business Development",
+  "Content Writing",
+  "UI/UX Design",
+  "DevOps",
+  "Full Stack Development",
+  "Quality Assurance",
+  "Research & Development",
+  "Legal",
+]
 const FindJob = () => {
   const [showFilters, setShowFilters] = useState(false);
 useEffect(() =>{
@@ -131,14 +154,7 @@ useEffect(() =>{
                   <ChevronDown size={16} />
                 </h3>
                 <div className="space-y-2">
-                  {[
-                    "Design",
-                    "Marketing",
-                    "Resource/Analytics",
-                    "Media & Creative",
-                    "Technology",
-                    "Financial Services",
-                  ].map((cat, idx) => (
+                  {Category.map((cat, idx) => (
                     <label
                       key={idx}
                       className="flex items-center gap-2 text-sm"

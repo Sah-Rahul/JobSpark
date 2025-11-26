@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import { Response } from "express";
 import jwt, { SignOptions } from "jsonwebtoken";
 
@@ -5,6 +7,7 @@ interface UserPayload {
   id: string;
   name?: string;
   email?: string;
+  role: "employee" | "recruiter";
   [key: string]: any;
 }
 
@@ -24,23 +27,26 @@ export const sendToken = ({
   const secret = process.env.JWT_SECRET_KEY;
   if (!secret) throw new Error("JWT_SECRET_KEY is missing");
 
-  const payload = { id: user.id };
+  const payload = {
+    id: user.id,
+    role: user.role,
+  };
 
   const options: SignOptions = {
-    expiresIn: Number(process.env.JWT_EXPIRES_IN) || "5d",
+    expiresIn: (process.env.JWT_EXPIRES_IN || "5d") as unknown as any,
   };
 
   const token = jwt.sign(payload, secret, options);
 
-  const cookieExpiresInDays = Number(process.env.COOKIES_EXPIRES_IN) || 7;
+  const cookieExpiry = Number(process.env.COOKIES_EXPIRES_IN) || 7;
 
   res
     .status(statusCode)
     .cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict" as const,
-      expires: new Date(Date.now() + cookieExpiresInDays * 24 * 60 * 60 * 1000),
+      sameSite: "strict",
+      expires: new Date(Date.now() + cookieExpiry * 24 * 60 * 60 * 1000),
     })
     .json({
       success: true,

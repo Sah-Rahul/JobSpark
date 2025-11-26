@@ -52,15 +52,21 @@ const jobSchema = new Schema(
       type: String,
       default: "",
     },
-    Experience:{
-      type:String,
-      default:""
+    Experience: {
+      type: String,
+      default: "",
     },
-    Category:{
-      type:String,
+    Category: {
+      type: String,
       enum: JobCategories,
-      default: "Other"
-    }
+      default: "Other",
+    },
+    appliedUsers: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   { timestamps: true }
 );

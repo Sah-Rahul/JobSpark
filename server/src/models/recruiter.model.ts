@@ -8,15 +8,12 @@ const recruiterSchema = new Schema(
       required: true,
       unique: true,
     },
-
     company: {
       type: Schema.Types.ObjectId,
       ref: "Company",
       required: true,
     },
-
-    position: { type: String, default: "HR" },
-
+    position: { type: String, default: "" },
     permissions: {
       type: [String],
       default: ["post_job", "manage_applications"],

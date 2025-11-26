@@ -5,8 +5,6 @@ import { isAuthenticated } from "../middleware/auth.middleware"
 
 const userRouter = Router()
 
-
-
 userRouter.post('/register', userRegister)
 userRouter.post('/login', userLogin)
 userRouter.post('/verify-email', verifyEmails)
@@ -14,12 +12,5 @@ userRouter.post('/forgot-Password', forgotPassword)
 userRouter.post('/logout',isAuthenticated, logoutUser)
 userRouter.post('/resend-otp',isAuthenticated, resendOtp)
 userRouter.post("/reset-password/:token", resetPassword);
-
-
-
-
-
-
-
 
 export default userRouter

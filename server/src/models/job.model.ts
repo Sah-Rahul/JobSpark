@@ -3,12 +3,6 @@ import { JobCategories } from "../config/constant";
 
 const jobSchema = new Schema(
   {
-    company: {
-      type: Schema.Types.ObjectId,
-      ref: "Company",
-      required: true,
-    },
-
     recruiter: {
       type: Schema.Types.ObjectId,
       ref: "Recruiter",

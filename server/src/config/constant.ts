@@ -15,11 +15,12 @@ export const JobCategories = [
   "Business Development",
   "Content Writing",
   "UI/UX Design",
+  "DevOps Engineering",
+  "Full Stack Development",
   "Quality Assurance",
   "Research & Development",
   "Legal",
   "Other",
 ] as const;
 
-export type DepartmentType = typeof JobCategories[number];
- 
+export type DepartmentType = (typeof JobCategories)[number];

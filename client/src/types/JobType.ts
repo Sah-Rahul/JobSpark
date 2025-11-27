@@ -41,6 +41,8 @@ export const JobCategories = [
   "Business Development",
   "Content Writing",
   "UI/UX Design",
+  "DevOps Engineering",
+  "Full Stack Development",
   "Quality Assurance",
   "Research & Development",
   "Legal",

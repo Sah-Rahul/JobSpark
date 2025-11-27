@@ -5,12 +5,9 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
-import "./models/index";   
-
 import { connectDB } from "./config/db";
 
 import userRouter from "./routes/user.routes";
-import companyRouter from "./routes/company.routes";
 import recruiterRouter from "./routes/recruiter.routes";
 import errorMiddleware from "./middleware/Error.middleware";
 
@@ -18,19 +15,20 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({
-  origin: process.env.FRONTEND_URL,
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  })
+);
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   res.send("hello from server");
 });
 
-app.use('/api/v1/user', userRouter);
-app.use('/api/v1/company', companyRouter);
-app.use('/api/v1/recruiter', recruiterRouter);
+app.use("/api/v1/user", userRouter);
+app.use("/api/v1/recruiter", recruiterRouter);
 
 app.use(errorMiddleware);
 

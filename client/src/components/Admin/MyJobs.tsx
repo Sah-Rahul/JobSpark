@@ -1,8 +1,10 @@
+import JobList from "./JobList"
+
  
 const MyJobs = () => {
   return (
     <div>
-      MyJobs
+      <JobList />
     </div>
   )
 }

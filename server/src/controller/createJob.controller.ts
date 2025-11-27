@@ -42,7 +42,6 @@ export const createJob = TryCacthError(
       Category,
       Degree,
       Experience,
-      company,
       jobDescription,
       jobTitle,
       jobType,
@@ -56,7 +55,6 @@ export const createJob = TryCacthError(
     } = parsed.data;
 
     const createdJob = await JobModel.create({
-      company,
       recruiter: userId,
       jobTitle,
       jobDescription,
@@ -226,6 +224,25 @@ export const applyJob = TryCacthError(
     return res.status(200).json({
       success: true,
       message: "Job applied successfully.",
+    });
+  }
+);
+
+export const getMyJobs = TryCacthError(
+  async (req: CustomRequest, res: Response) => {
+    const userId = req.user?.id;
+    const role = req.user?.role;
+
+    if (!userId || !role) {
+      throw new ApiError(401, "Unauthorized user.");
+    }
+
+    const jobs = await JobModel.find({ recruiter: userId });
+
+    return res.status(200).json({
+      success: true,
+      message: "My jobs fetched successfully.",
+      data: jobs,
     });
   }
 );

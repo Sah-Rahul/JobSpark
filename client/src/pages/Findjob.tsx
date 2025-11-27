@@ -4,7 +4,6 @@ import {
   Briefcase,
   DollarSign,
   Calendar,
-  ChevronDown,
   Bookmark,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -109,12 +108,12 @@ const Category = [
   "Quality Assurance",
   "Research & Development",
   "Legal",
-]
+];
 const FindJob = () => {
   const [showFilters, setShowFilters] = useState(false);
-useEffect(() =>{
-  window.scroll(0,0)
-},[])
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="bg-gray-900 h-76   flex items-center justify-center text-white py-12 px-4">
@@ -129,7 +128,7 @@ useEffect(() =>{
           <aside
             className={`lg:w-64 ${showFilters ? "block" : "hidden"} lg:block`}
           >
-            <div className="bg-white rounded-lg p-6 space-y-6 sticky top-6">
+            <div className="bg-[#eaf4f4] rounded-lg p-6 space-y-6 sticky top-6">
               <div>
                 <h3 className="font-semibold text-gray-900 mb-3">
                   Search by Job Title
@@ -151,7 +150,6 @@ useEffect(() =>{
               <div>
                 <h3 className="font-semibold text-gray-900 mb-3 flex items-center justify-between">
                   Category
-                  <ChevronDown size={16} />
                 </h3>
                 <div className="space-y-2">
                   {Category.map((cat, idx) => (
@@ -172,7 +170,6 @@ useEffect(() =>{
               <div>
                 <h3 className="font-semibold text-gray-900 mb-3 flex items-center justify-between">
                   Job Type
-                  <ChevronDown size={16} />
                 </h3>
                 <div className="space-y-2">
                   {["Full Time", "Permanent", "Internship", "Freelance"].map(
@@ -195,7 +192,6 @@ useEffect(() =>{
               <div>
                 <h3 className="font-semibold text-gray-900 mb-3 flex items-center justify-between">
                   Experience Level
-                  <ChevronDown size={16} />
                 </h3>
                 <div className="space-y-2">
                   {["Entry", "Mid", "Postgrad", "Senior"].map((level, idx) => (

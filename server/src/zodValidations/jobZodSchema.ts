@@ -1,11 +1,9 @@
- import { z } from "zod";
+import { z } from "zod";
 import { JobCategories } from "../config/constant";
 
 const objectId = z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid ObjectId");
 
 export const createJobSchema = z.object({
-  company: objectId,
-
   jobTitle: z.string().trim().min(1),
   jobDescription: z.string().min(1),
 
@@ -33,11 +31,10 @@ export const createJobSchema = z.object({
   Degree: z.string().default(""),
   Experience: z.string().default(""),
 
-  Category: z.enum(JobCategories).default("Other")
+  Category: z.enum(JobCategories).default("Other"),
 });
 
-export type JobType = z.infer< typeof createJobSchema>
-
+export type JobType = z.infer<typeof createJobSchema>;
 
 export const updateJobSchema = z.object({
   company: objectId.optional(),
@@ -69,7 +66,7 @@ export const updateJobSchema = z.object({
   Degree: z.string().default(""),
   Experience: z.string().default(""),
 
-  Category: z.enum(JobCategories).default("Other")
+  Category: z.enum(JobCategories).default("Other"),
 });
 
-export type UpdateJobType = z.infer< typeof updateJobSchema>
+export type UpdateJobType = z.infer<typeof updateJobSchema>;

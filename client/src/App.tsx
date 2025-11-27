@@ -24,7 +24,6 @@ import Favorites from "./pages/UserAdmin/Favorites";
 import Setting from "./pages/UserAdmin/Setting";
 import JobDetails from "./components/JobDetails";
 import MyJobs from "./components/Admin/MyJobs";
- 
 
 const App = () => {
   return (
@@ -42,19 +41,14 @@ const App = () => {
             <Route path="/contact" element={<Contact />} />
             <Route path="find-job" element={<Findjob />} />
           </Route>
-           
-            <Route path="/job/details" element={<JobDetails />} />
-
-             // Recrutier admin dashboard
+          <Route path="/job/details" element={<JobDetails />} />
+          // Recrutier admin dashboard
           <Route path="/" element={<UserLayout />}>
             <Route path="/user/dashboard" element={<UserDashboard />} />
             <Route path="/user/applied" element={<AppliedJobs />} />
             <Route path="/user/favorites" element={<Favorites />} />
             <Route path="/user/settings" element={<Setting />} />
           </Route>
-
-
-
           // Recrutier admin dashboard
           <Route path="/" element={<AdminLayout />}>
             <Route path="/admin/dashboard" element={<Dashboard />} />

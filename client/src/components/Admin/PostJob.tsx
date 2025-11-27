@@ -1,12 +1,10 @@
 import { useState } from "react";
-
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-
 import {
   Select,
   SelectTrigger,
@@ -20,6 +18,9 @@ import {
   type CreateJobPayload,
   type DepartmentType,
 } from "@/types/JobType";
+import { JobSchema } from "@/ZodValidation/jobZodSchema";
+import { postJob } from "@/Api/jobApi";
+import toast from "react-hot-toast";
 
 const PostJob = () => {
   const [jobData, setJobData] = useState<CreateJobPayload>({
@@ -37,112 +38,168 @@ const PostJob = () => {
 
   const [skillInput, setSkillInput] = useState("");
   const [respInput, setRespInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof CreateJobPayload, string>>
+  >({});
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setJobData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleNumberChange = (field: "min" | "max", value: number) => {
+    setJobData((prev) => ({
+      ...prev,
+      salaryRange: { ...prev.salaryRange, [field]: value },
+    }));
+  };
+
+  const handleValidation = (): boolean => {
+    const result = JobSchema.safeParse(jobData);
+
+    if (!result.success) {
+      const fieldErrors: Partial<Record<keyof CreateJobPayload, string>> = {};
+      result.error.issues.forEach((err) => {
+        const field = err.path[0] as keyof CreateJobPayload;
+        fieldErrors[field] = err.message;
+      });
+      setErrors(fieldErrors);
+      return false;
+    }
+
+    setErrors({});
+    return true;
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form Values:", jobData);
+    if (!handleValidation()) return;
+
+    setLoading(true);
+    try {
+      const res = await postJob(jobData);
+      console.log("Job posted:", res);
+      toast.success("Job created successfully!");
+
+      setJobData({
+        jobTitle: "",
+        jobDescription: "",
+        jobType: "",
+        experienceRequired: "",
+        location: "",
+        salaryRange: { min: 0, max: 0 },
+        skillsRequired: [],
+        KeyResponsibilities: [],
+        Category: "",
+        Degree: "",
+      });
+      setSkillInput("");
+      setRespInput("");
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Failed to post job!");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="  ">
+    <div>
       <Card>
         <form onSubmit={handleSubmit}>
           <CardContent className="p-6 space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <Label>Job Title</Label>
+                <Label htmlFor="jobTitle">Job Title</Label>
                 <Input
+                  id="jobTitle"
+                  name="jobTitle"
                   placeholder="Frontend Developer"
                   value={jobData.jobTitle}
-                  onChange={(e) =>
-                    setJobData({ ...jobData, jobTitle: e.target.value })
-                  }
+                  onChange={handleChange}
                 />
+                {errors.jobTitle && (
+                  <p className="text-red-500 text-sm">{errors.jobTitle}</p>
+                )}
               </div>
-
               <div>
-                <Label>Job Type</Label>
+                <Label htmlFor="jobType">Job Type</Label>
                 <Input
+                  id="jobType"
+                  name="jobType"
                   placeholder="Full-time, Remote, Internship"
                   value={jobData.jobType}
-                  onChange={(e) =>
-                    setJobData({ ...jobData, jobType: e.target.value })
-                  }
+                  onChange={handleChange}
                 />
+                {errors.jobType && (
+                  <p className="text-red-500 text-sm">{errors.jobType}</p>
+                )}
               </div>
-
               <div>
-                <Label>Experience Required</Label>
+                <Label htmlFor="experienceRequired">Experience Required</Label>
                 <Input
+                  id="experienceRequired"
+                  name="experienceRequired"
                   placeholder="2-4 years"
                   value={jobData.experienceRequired}
-                  onChange={(e) =>
-                    setJobData({
-                      ...jobData,
-                      experienceRequired: e.target.value,
-                    })
-                  }
+                  onChange={handleChange}
                 />
+                {errors.experienceRequired && (
+                  <p className="text-red-500 text-sm">
+                    {errors.experienceRequired}
+                  </p>
+                )}
               </div>
-
               <div>
-                <Label>Location</Label>
+                <Label htmlFor="location">Location</Label>
                 <Input
+                  id="location"
+                  name="location"
                   placeholder="New York, Remote"
                   value={jobData.location}
-                  onChange={(e) =>
-                    setJobData({ ...jobData, location: e.target.value })
-                  }
+                  onChange={handleChange}
                 />
+                {errors.location && (
+                  <p className="text-red-500 text-sm">{errors.location}</p>
+                )}
               </div>
-
               <div>
-                <Label>Salary Min</Label>
+                <Label htmlFor="salaryMin">Salary Min</Label>
                 <Input
                   type="number"
+                  id="salaryMin"
                   placeholder="50000"
                   value={jobData.salaryRange.min}
                   onChange={(e) =>
-                    setJobData({
-                      ...jobData,
-                      salaryRange: {
-                        ...jobData.salaryRange,
-                        min: Number(e.target.value),
-                      },
-                    })
+                    handleNumberChange("min", Number(e.target.value))
                   }
                 />
               </div>
 
               <div>
-                <Label>Salary Max</Label>
+                <Label htmlFor="salaryMax">Salary Max</Label>
                 <Input
                   type="number"
+                  id="salaryMax"
                   placeholder="80000"
                   value={jobData.salaryRange.max}
                   onChange={(e) =>
-                    setJobData({
-                      ...jobData,
-                      salaryRange: {
-                        ...jobData.salaryRange,
-                        max: Number(e.target.value),
-                      },
-                    })
+                    handleNumberChange("max", Number(e.target.value))
                   }
                 />
               </div>
-
               <div>
-                <Label>Degree</Label>
+                <Label htmlFor="Degree">Degree</Label>
                 <Input
+                  id="Degree"
+                  name="Degree"
                   placeholder="Bachelor / Master"
                   value={jobData.Degree}
-                  onChange={(e) =>
-                    setJobData({ ...jobData, Degree: e.target.value })
-                  }
+                  onChange={handleChange}
                 />
               </div>
-
               <div className="w-full">
                 <Label>Category</Label>
                 <Select
@@ -163,19 +220,19 @@ const PostJob = () => {
                 </Select>
               </div>
             </div>
-
             <div>
               <Label>Job Description</Label>
               <Textarea
                 rows={4}
                 placeholder="Describe the job role..."
+                name="jobDescription"
                 value={jobData.jobDescription}
-                onChange={(e) =>
-                  setJobData({ ...jobData, jobDescription: e.target.value })
-                }
+                onChange={handleChange}
               />
+              {errors.jobDescription && (
+                <p className="text-red-500 text-sm">{errors.jobDescription}</p>
+              )}
             </div>
-
             <div>
               <Label>Skills Required</Label>
               <div className="flex gap-2 mt-2">
@@ -241,8 +298,12 @@ const PostJob = () => {
               </ul>
             </div>
 
-            <Button type="submit" className="w-full cursor-pointer">
-              Post Job
+            <Button
+              type="submit"
+              className="w-full cursor-pointer"
+              disabled={loading}
+            >
+              {loading ? "Posting ..." : "Post Job"}
             </Button>
           </CardContent>
         </form>

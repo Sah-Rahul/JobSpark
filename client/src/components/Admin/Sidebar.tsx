@@ -5,6 +5,7 @@ import {
   Bookmark,
   Settings,
   LogOut,
+  DollarSign,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
@@ -14,7 +15,7 @@ const menu = [
   { name: "Post a Job", icon: Briefcase, path: "/admin/post-job" },
   { name: "My Jobs", icon: Briefcase, path: "/admin/my-job" },
   { name: "Saved Candidates", icon: Bookmark, path: "/admin/saved-candidated" },
-  { name: "Plans & Billing", icon: Briefcase, path: "/admin/plans-billing" },
+  { name: "Plans & Billing", icon: DollarSign, path: "/admin/plans-billing" },
   { name: "Settings", icon: Settings, path: "/admin/settings" },
 ];
 

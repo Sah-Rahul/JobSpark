@@ -20,10 +20,10 @@ recruiterRouter.put(
   isRecruiter,
   updateJob
 );
-recruiterRouter.get("/", isAuthenticated, getAllJobs);
+recruiterRouter.get("/all/jobs", isAuthenticated, getAllJobs);
 recruiterRouter.get("/get/job-details/:jobId", isAuthenticated, getJobDetails);
 recruiterRouter.post("/apply/:jobId", isAuthenticated, applyJob);
-recruiterRouter.delete("/:jobId", isAuthenticated, isRecruiter, deleteJob);
+recruiterRouter.delete("/delete/job/:jobId", isAuthenticated, isRecruiter, deleteJob);
 recruiterRouter.get("/me", isAuthenticated, isRecruiter, getMyJobs);
 
 export default recruiterRouter;

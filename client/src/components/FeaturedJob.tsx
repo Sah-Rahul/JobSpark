@@ -1,72 +1,79 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Bookmark, ArrowRight, MapPin, DollarSign } from "lucide-react";
+import { getAllJobs } from "@/Api/jobApi";
+import { Link } from "react-router-dom";
 
 interface JobItem {
-  id: number;
+  id: string;
   companyLogo: React.ReactNode;
   jobTitle: string;
-  jobType: "Full Time" | "Contract Base" | "Internship";
+  jobType: "Full-time" | "Part-time" | "Remote" | "Internship";
   location: string;
   salaryRange: string;
   daysRemaining: number;
   isBookmarked: boolean;
 }
 
-const featuredJobsData: JobItem[] = [
-  {
-    id: 1,
-    companyLogo: (
-      <div className="p-2 rounded-full bg-green-500 text-white font-bold text-sm">
-        Up
-      </div>
-    ),
-    jobTitle: "Senior UX Designer",
-    jobType: "Contract Base",
-    location: "Australia",
-    salaryRange: "$30K - $70K",
-    daysRemaining: 4,
-    isBookmarked: false,
-  },
-  {
-    id: 2,
-    companyLogo: (
-      <div className="p-2 rounded-full bg-gray-900 text-white font-bold text-sm">
-        Ad
-      </div>
-    ),
-    jobTitle: "Software Engineer",
-    jobType: "Full Time",
-    location: "China",
-    salaryRange: "$50K - $80K",
-    daysRemaining: 4,
-    isBookmarked: false,
-  },
-  {
-    id: 3,
-    companyLogo: (
-      <div className="p-2 rounded-full bg-red-600 text-white font-bold text-sm">
-        Td
-      </div>
-    ),
-    jobTitle: "Junior Graphic Designer",
-    jobType: "Full Time",
-    location: "Canada",
-    salaryRange: "$32K - $40K",
-    daysRemaining: 4,
-    isBookmarked: false,
-  },
-];
-
 const FeaturedJob: React.FC = () => {
+  const [jobs, setJobs] = useState<JobItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const res = await getAllJobs();
+
+        const mappedJobs: JobItem[] = res.map((job: any) => ({
+          id: job._id,
+          companyLogo: (
+            <div className="p-2 rounded-full bg-gray-900 text-white font-bold text-sm">
+              {job.jobTitle
+                .split(" ")
+                .map((word: string) => word[0])
+                .join("")
+                .slice(0, 2)
+                .toUpperCase()}
+            </div>
+          ),
+          jobTitle: job.jobTitle,
+          jobType: job.jobType,
+          location: job.location || "Not specified",
+          salaryRange: `$${job.salaryRange?.min ?? "N/A"} - $${
+            job.salaryRange?.max ?? "N/A"
+          }`,
+          daysRemaining: Math.max(
+            0,
+            Math.floor(
+              (new Date(job.updatedAt).getTime() - new Date().getTime()) /
+                (1000 * 60 * 60 * 24)
+            )
+          ),
+          isBookmarked: false,
+        }));
+
+        setJobs(mappedJobs);
+      } catch (error) {
+        console.error("Failed to fetch jobs", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, []);
+
+  if (loading) return <div>Loading jobs...</div>;
+  if (jobs.length === 0) return <div>No featured jobs found.</div>;
+
   return (
     <section className="py-12 md:py-16 bg-white">
       <div className="container mx-auto px-4 max-w-6xl">
         <div className="flex justify-between items-center mb-8 flex-col md:flex-row">
           <h2 className="text-3xl md:text-4xl font-semibold text-gray-900 mb-4 md:mb-0">
-            Featured job
+            Featured Jobs
           </h2>
-          <a
-            href="#"
+          <Link
+            to="/find-job"
             className="flex items-center text-blue-600 hover:text-blue-700 font-medium group text-sm"
           >
             View All
@@ -74,16 +81,18 @@ const FeaturedJob: React.FC = () => {
               size={18}
               className="ml-1 transition-transform group-hover:translate-x-1"
             />
-          </a>
+          </Link>
         </div>
         <div className="space-y-4">
-          {featuredJobsData.map((job) => {
+          {jobs.slice(0, 3).map((job) => {
             const tagColor =
-              job.jobType === "Full Time"
+              job.jobType === "Full-time"
                 ? "bg-blue-100 text-blue-600"
-                : job.jobType === "Contract Base"
+                : job.jobType === "Internship"
                 ? "bg-green-100 text-green-600"
-                : "bg-indigo-100 text-indigo-600";
+                : job.jobType === "Remote"
+                ? "bg-indigo-100 text-indigo-600"
+                : "bg-gray-100 text-gray-600";
 
             return (
               <div
@@ -96,9 +105,11 @@ const FeaturedJob: React.FC = () => {
                   </div>
                   <div className="flex flex-col md:flex-row md:items-center md:space-x-4">
                     <div className="flex items-center mb-1">
-                      <h3 className="text-lg font-medium text-gray-900 truncate">
+                      <Link to={`/job/details/${job.id}`}>
+                      <h3 className="text-lg hover:text-blue-500 font-medium text-gray-900 truncate">
                         {job.jobTitle}
                       </h3>
+                      </Link>
                       <span
                         className={`ml-2 px-2 py-0.5 text-xs font-medium rounded-full ${tagColor}`}
                       >
@@ -123,7 +134,7 @@ const FeaturedJob: React.FC = () => {
                     <Bookmark size={20} />
                   </button>
                   <button className="flex items-center px-4 py-2 rounded-lg font-medium transition-colors cursor-pointer bg-blue-50 hover:bg-blue-100 text-blue-600">
-                   Job details
+                    Job details
                     <ArrowRight size={18} className="ml-2" />
                   </button>
                 </div>

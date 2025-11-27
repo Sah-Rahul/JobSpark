@@ -9,12 +9,15 @@ import {
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { getMyJobs } from "@/Api/jobApi";
+import { deleteJobs, getMyJobs } from "@/Api/jobApi";
+import toast from "react-hot-toast";
+import EditJobDialog from "./EditJobDialog";
+ 
 
 export interface JobInterface {
-  _id: string; // job id from MongoDB
-  company: string; // ObjectId of company
-  recruiter: string; // recruiter id
+  _id: string;
+  company: string;
+  recruiter: string;
 
   jobTitle: string;
   jobDescription: string;
@@ -50,6 +53,8 @@ export interface JobInterface {
 const JobList = () => {
   const [jobs, setJobs] = useState<JobInterface[]>([]);
   const [loading, setLoading] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [selectedJob, setSelectedJob] = useState<JobInterface | null>(null);
 
   const fetchAllJobs = async () => {
     try {
@@ -60,6 +65,19 @@ const JobList = () => {
       console.error("Error fetching jobs:", err);
     } finally {
       setLoading(false);
+    }
+  };
+  console.log(jobs);
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteJobs(id);
+
+      setJobs((prevJobs) => prevJobs.filter((job) => job._id !== id));
+
+      toast.success("Job deleted successfully.");
+    } catch (error) {
+      toast.error("Failed to delete job");
+      console.log(error);
     }
   };
 
@@ -92,7 +110,7 @@ const JobList = () => {
               <Badge
                 className={
                   job.status === "Active"
-                    ? "bg-green-100 text-green-600"
+                    ? "bg-blue-500 text-white "
                     : "bg-red-100 text-red-600"
                 }
               >
@@ -114,14 +132,30 @@ const JobList = () => {
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem>View Applications</DropdownMenuItem>
                     <DropdownMenuItem>Mark as Closed</DropdownMenuItem>
-                    <DropdownMenuItem>Edit Job</DropdownMenuItem>
-                    <DropdownMenuItem>Delete Job</DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setSelectedJob(job);
+                        setOpenEdit(true);
+                      }}
+                    >
+                      Edit Job
+                    </DropdownMenuItem>
 
+                    <div onClick={() => handleDelete(job._id)}>
+                      <DropdownMenuItem>Delete Job</DropdownMenuItem>
+                    </div>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
             </div>
           ))}
+          {selectedJob && (
+            <EditJobDialog
+              open={openEdit}
+              setOpen={setOpenEdit}
+              job={selectedJob}
+            />
+          )}
         </div>
       )}
     </Card>

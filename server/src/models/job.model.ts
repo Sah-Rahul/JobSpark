@@ -46,10 +46,6 @@ const jobSchema = new Schema(
       type: String,
       default: "",
     },
-    Experience: {
-      type: String,
-      default: "",
-    },
     Category: {
       type: String,
       enum: JobCategories,

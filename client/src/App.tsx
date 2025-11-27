@@ -41,7 +41,7 @@ const App = () => {
             <Route path="/contact" element={<Contact />} />
             <Route path="find-job" element={<Findjob />} />
           </Route>
-          <Route path="/job/details" element={<JobDetails />} />
+          <Route path="/job/details/:id" element={<JobDetails />} />
           // Recrutier admin dashboard
           <Route path="/" element={<UserLayout />}>
             <Route path="/user/dashboard" element={<UserDashboard />} />

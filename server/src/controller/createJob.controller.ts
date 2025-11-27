@@ -67,7 +67,6 @@ export const createJob = TryCacthError(
       ProfessionalSkills,
       KeyResponsibilities,
       Degree,
-      Experience,
       Category,
     });
 
@@ -157,7 +156,7 @@ export const deleteJob = TryCacthError(
 
 export const getAllJobs = TryCacthError(
   async (req: CustomRequest, res: Response) => {
-    const jobs = await JobModel.find({ status: "Active" }).populate("company");
+    const jobs = await JobModel.find();
     return res.status(200).json({
       success: true,
       message: "Jobs fetched successfully.",
@@ -170,7 +169,7 @@ export const getJobDetails = TryCacthError(
   async (req: CustomRequest, res: Response) => {
     const jobId = req.params.jobId;
 
-    const job = await JobModel.findById(jobId).populate("company recruiter");
+    const job = await JobModel.findById(jobId);
     if (!job) {
       throw new ApiError(404, "Job not found.");
     }

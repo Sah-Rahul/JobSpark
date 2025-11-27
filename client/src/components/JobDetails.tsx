@@ -9,8 +9,7 @@ import {
   BadgeCheck,
   Clock,
   Briefcase,
-  GraduationCap,
-  Building2,
+  GraduationCap, 
   BookmarkPlus,
   ArrowLeft,
 } from "lucide-react";
@@ -30,6 +29,9 @@ const JobDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
   useEffect(() => {
     if (!id) return;
 
@@ -69,7 +71,6 @@ const JobDetails = () => {
         <Navbar />
         <div className="min-h-screen flex items-center justify-center bg-gray-50">
           <div className="text-center">
-            <div className="text-red-500 text-xl mb-4">⚠️</div>
             <p className="text-red-600 font-semibold">{error}</p>
           </div>
         </div>
@@ -119,10 +120,6 @@ const JobDetails = () => {
                           <h1 className="text-3xl font-bold text-gray-900">
                             {job.jobTitle}
                           </h1>
-                          <p className="text-gray-600 mt-1 flex items-center gap-2">
-                            <Building2 className="w-4 h-4" />
-                            Company Name
-                          </p>
                         </div>
                       </div>
                     </div>
@@ -192,9 +189,6 @@ const JobDetails = () => {
               <Card className="border-0 shadow-md">
                 <CardContent className="p-8">
                   <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <span className="text-blue-600">📄</span>
-                    </div>
                     Job Description
                   </h2>
                   <p className="text-gray-600 leading-relaxed whitespace-pre-line">
@@ -229,9 +223,6 @@ const JobDetails = () => {
               <Card className="border-0 shadow-md">
                 <CardContent className="p-8">
                   <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                      <span className="text-purple-600">🏷️</span>
-                    </div>
                     Skills & Tags
                   </h2>
                   <div className="flex gap-2 flex-wrap">

@@ -106,9 +106,9 @@ const FeaturedJob: React.FC = () => {
                   <div className="flex flex-col md:flex-row md:items-center md:space-x-4">
                     <div className="flex items-center mb-1">
                       <Link to={`/job/details/${job.id}`}>
-                      <h3 className="text-lg hover:text-blue-500 font-medium text-gray-900 truncate">
-                        {job.jobTitle}
-                      </h3>
+                        <h3 className="text-lg hover:text-blue-500 font-medium text-gray-900 truncate">
+                          {job.jobTitle}
+                        </h3>
                       </Link>
                       <span
                         className={`ml-2 px-2 py-0.5 text-xs font-medium rounded-full ${tagColor}`}
@@ -133,10 +133,12 @@ const FeaturedJob: React.FC = () => {
                   <button className="p-2 border border-gray-200 rounded-lg text-gray-500 hover:bg-gray-50 transition-colors">
                     <Bookmark size={20} />
                   </button>
-                  <button className="flex items-center px-4 py-2 rounded-lg font-medium transition-colors cursor-pointer bg-blue-50 hover:bg-blue-100 text-blue-600">
-                    Job details
-                    <ArrowRight size={18} className="ml-2" />
-                  </button>
+                  <Link to={`/job/details/${job.id}`}>
+                    <button className="flex items-center px-4 py-2 rounded-lg font-medium transition-colors cursor-pointer bg-blue-50 hover:bg-blue-100 text-blue-600">
+                      Job details
+                      <ArrowRight size={18} className="ml-2" />
+                    </button>
+                  </Link>
                 </div>
               </div>
             );

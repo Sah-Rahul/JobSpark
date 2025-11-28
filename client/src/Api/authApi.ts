@@ -56,3 +56,15 @@ export const resetPassword = async (
   return data;
 };
 
+export const getMe = async () => {
+  const { data } = await axiosInstance.get(`/api/v1/user/me`);
+  return data;
+};
+
+export const updateProfile = async (userId: string, data: any) => {
+  const response = await axiosInstance.put(
+    `/api/v1/user/update/profile/${userId}`,
+    data
+  );
+  return response.data;
+};

@@ -17,7 +17,6 @@ import crypto from "crypto";
 import { sendToken } from "../utils/SendToken";
 import { sendEmail } from "../services/sendEmail";
 import { verifyEmail } from "../services/verifyEmail";
-import { forgotPasswordEmailTemplate } from "../services/forgotPassword";
 import { resetPasswordEmail } from "../services/resetPassword";
 
 interface AuthRequest extends Request {
@@ -346,5 +345,48 @@ export const resetPassword = TryCacthError(
           "Password reset successful. Please login again."
         )
       );
+  }
+);
+
+export const getMe = TryCacthError(async (req: AuthRequest, res: Response) => {
+  const userId = req.user?.id;
+
+  if (!userId) {
+    return res.status(401).json(new ApiResponse(401, null, "Unauthorized"));
+  }
+
+  const user = await UserModel.findById(userId).select("-password");
+
+  if (!user) {
+    return res.status(404).json(new ApiResponse(404, null, "User not found"));
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, user, "Profile fetched successfully"));
+});
+
+export const updateProfile = TryCacthError(
+  async (req: AuthRequest, res: Response) => {
+    const userId = req.user?.id;
+    const { fullName, email, phone, location, bio, profile } = req.body;
+
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return res.status(404).json(new ApiResponse(404, null, "User not found"));
+    }
+
+    user.fullName = fullName ?? user.fullName;
+    user.email = email ?? user.email;
+    user.phone = phone ?? user.phone;
+    user.location = location ?? user.location;
+    user.bio = bio ?? user.bio;
+    user.profile = profile ?? user.profile;
+
+    await user.save();
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, user, "Profile updated successfully"));
   }
 );

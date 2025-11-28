@@ -1,8 +1,9 @@
 import { NavLink } from "react-router-dom";
-import { Home, Briefcase, Heart, Settings, LogOut } from "lucide-react";
+import { Home, Briefcase, Heart, Settings, LogOut, User } from "lucide-react";
 
 const menu = [
   { name: "Overview", icon: Home, path: "/user/dashboard" },
+  { name: "Profile", icon: User, path: "/user/profile" },
   { name: "Applied Jobs", icon: Briefcase, path: "/user/applied" },
   { name: "Favorite Jobs", icon: Heart, path: "/user/favorites" },
   { name: "Settings", icon: Settings, path: "/user/settings" },

@@ -2,31 +2,7 @@ import React from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import type { SidebarFilterProps } from "@/types/JobType";
-
-const Categories = [
-  "Engineering",
-  "Civil Engineering",
-  "Mechanical Engineering",
-  "Electrical Engineering",
-  "Data Science",
-  "Marketing",
-  "Design",
-  "Sales",
-  "Customer Support",
-  "Human Resources",
-  "Finance",
-  "Operations",
-  "Product Management",
-  "Business Development",
-  "Content Writing",
-  "UI/UX Design",
-  "DevOps",
-  "Full Stack Development",
-  "Quality Assurance",
-  "Research & Development",
-  "Legal",
-];
+import { JobCategories, type SidebarFilterProps } from "@/types/JobType";
 
 const JobTypes = ["Full Time", "Remote", "Internship", "Freelance"];
 const DateOptions = [
@@ -67,7 +43,7 @@ const SidebarFilter: React.FC<SidebarFilterProps> = ({
       <div>
         <h3 className="font-semibold text-gray-900 mb-3">Category</h3>
         <div className="space-y-2  ">
-          {Categories.map((cat) => (
+          {JobCategories.map((cat) => (
             <label key={cat} className="flex items-center gap-2 text-sm">
               <Checkbox
                 checked={selectedCategories.includes(cat)}

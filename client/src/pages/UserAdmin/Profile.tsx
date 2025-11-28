@@ -20,7 +20,7 @@ type UserProfile = {
   updatedAt: string;
 };
 
-const EmployerProfile = () => {
+const Profile = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({
@@ -171,4 +171,4 @@ const EmployerProfile = () => {
   );
 };
 
-export default EmployerProfile;
+export default Profile;

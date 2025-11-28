@@ -24,6 +24,7 @@ import Favorites from "./pages/UserAdmin/Favorites";
 import Setting from "./pages/UserAdmin/Setting";
 import JobDetails from "./components/JobDetails";
 import MyJobs from "./components/Admin/MyJobs";
+import Profile from "./pages/UserAdmin/Profile";
 
 const App = () => {
   return (
@@ -42,8 +43,9 @@ const App = () => {
             <Route path="find-job" element={<Findjob />} />
           </Route>
           <Route path="/job/details/:id" element={<JobDetails />} />
-          // Recrutier admin dashboard
+          // Recrutier user dashboard
           <Route path="/" element={<UserLayout />}>
+            <Route path="/user/profile" element={<Profile />} />
             <Route path="/user/dashboard" element={<UserDashboard />} />
             <Route path="/user/applied" element={<AppliedJobs />} />
             <Route path="/user/favorites" element={<Favorites />} />

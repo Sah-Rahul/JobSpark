@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
+<<<<<<< HEAD
 import { Bookmark, ArrowRight, MapPin, DollarSign } from "lucide-react";
+=======
+import { Bookmark, ArrowRight, MapPin } from "lucide-react";
+>>>>>>> 77fc65b (fix features page)
 import { getAllJobs } from "@/Api/jobApi";
 import { Link } from "react-router-dom";
 
@@ -122,10 +126,15 @@ const FeaturedJob: React.FC = () => {
                         <span>{job.location}</span>
                       </div>
                       <div className="flex items-center">
+<<<<<<< HEAD
                         <DollarSign size={16} className="mr-1 text-gray-400" />
                         <span>{job.salaryRange}</span>
                       </div>
                       <span>{job.daysRemaining} Days Remaining</span>
+=======
+                        <span>{job.salaryRange}</span>
+                      </div>
+>>>>>>> 77fc65b (fix features page)
                     </div>
                   </div>
                 </div>

@@ -66,3 +66,25 @@ export interface CreateJobPayload {
   Category: DepartmentType | string;
   Degree: string;
 }
+<<<<<<< HEAD
+=======
+
+
+
+export type SidebarFilterProps = {
+  selectedCategories: string[];
+  setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>;
+  selectedJobTypes: string[];
+  setSelectedJobTypes: React.Dispatch<React.SetStateAction<string[]>>;
+  selectedExperienceLevels: string[];
+  setSelectedExperienceLevels: React.Dispatch<React.SetStateAction<string[]>>;
+  salaryRange: { min?: number; max?: number };
+  setSalaryRange: React.Dispatch<
+    React.SetStateAction<{ min?: number; max?: number }>
+  >;
+  searchTitle: string;
+  setSearchTitle: React.Dispatch<React.SetStateAction<string>>;
+  selectedDate: string;
+  setSelectedDate: React.Dispatch<React.SetStateAction<string>>;
+};
+>>>>>>> 77fc65b (fix features page)

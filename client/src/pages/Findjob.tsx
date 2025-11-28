@@ -1,14 +1,5 @@
 import { useEffect, useState } from "react";
-<<<<<<< HEAD
-import {
-  MapPin,
-  Briefcase,
-  Calendar,
-  Bookmark,
-} from "lucide-react";
-=======
 import { MapPin, Briefcase, Calendar, Bookmark } from "lucide-react";
->>>>>>> 77fc65b (fix features page)
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -25,21 +16,15 @@ const FindJob = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-<<<<<<< HEAD
-=======
+  // Filter states
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedJobTypes, setSelectedJobTypes] = useState<string[]>([]);
-  const [selectedExperienceLevels, setSelectedExperienceLevels] = useState<
-    string[]
-  >([]);
-  const [salaryRange, setSalaryRange] = useState<{
-    min?: number;
-    max?: number;
-  }>({});
+  const [selectedExperienceLevels, setSelectedExperienceLevels] = useState<string[]>([]);
+  const [salaryRange, setSalaryRange] = useState<{ min?: number; max?: number }>({});
   const [searchTitle, setSearchTitle] = useState("");
   const [selectedDate, setSelectedDate] = useState("All");
 
->>>>>>> 77fc65b (fix features page)
+  // Fetch jobs
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -53,8 +38,7 @@ const FindJob = () => {
     fetchJobs();
   }, []);
 
-<<<<<<< HEAD
-=======
+  // Apply filters whenever any filter changes
   useEffect(() => {
     let filteredJobs = [...jobs];
 
@@ -84,12 +68,13 @@ const FindJob = () => {
 
     if (salaryRange.min != null) {
       filteredJobs = filteredJobs.filter(
-        (job) => job.salaryRange.max >= salaryRange.min!
+        (job) => (job.salaryRange?.max ?? 0) >= salaryRange.min!
       );
     }
+
     if (salaryRange.max != null) {
       filteredJobs = filteredJobs.filter(
-        (job) => job.salaryRange.min <= salaryRange.max!
+        (job) => (job.salaryRange?.min ?? 0) <= salaryRange.max!
       );
     }
 
@@ -101,17 +86,11 @@ const FindJob = () => {
           case "Last 24 hours":
             return now.getTime() - createdAt.getTime() <= 24 * 60 * 60 * 1000;
           case "Last 7 days":
-            return (
-              now.getTime() - createdAt.getTime() <= 7 * 24 * 60 * 60 * 1000
-            );
+            return now.getTime() - createdAt.getTime() <= 7 * 24 * 60 * 60 * 1000;
           case "Last 14 days":
-            return (
-              now.getTime() - createdAt.getTime() <= 14 * 24 * 60 * 60 * 1000
-            );
+            return now.getTime() - createdAt.getTime() <= 14 * 24 * 60 * 60 * 1000;
           case "Last 30 days":
-            return (
-              now.getTime() - createdAt.getTime() <= 30 * 24 * 60 * 60 * 1000
-            );
+            return now.getTime() - createdAt.getTime() <= 30 * 24 * 60 * 60 * 1000;
           default:
             return true;
         }
@@ -130,24 +109,17 @@ const FindJob = () => {
     selectedDate,
   ]);
 
->>>>>>> 77fc65b (fix features page)
   const paginatedJobs = displayJobs.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-<<<<<<< HEAD
 
-=======
->>>>>>> 77fc65b (fix features page)
   const totalPages = Math.ceil(displayJobs.length / itemsPerPage);
 
-  const handleChange = (e: any) => {
+  // Sorting handler
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
-<<<<<<< HEAD
-    let sortedJobs = [...jobs];
-=======
     let sortedJobs = [...displayJobs];
->>>>>>> 77fc65b (fix features page)
 
     if (value === "newest") {
       sortedJobs.sort(
@@ -160,7 +132,7 @@ const FindJob = () => {
           new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
       );
     } else if (value === "salary") {
-      sortedJobs.sort((a, b) => b.salaryRange.max - a.salaryRange.max);
+      sortedJobs.sort((a, b) => (b.salaryRange?.max ?? 0) - (a.salaryRange?.max ?? 0));
     }
 
     setDisplayJobs(sortedJobs);
@@ -170,7 +142,7 @@ const FindJob = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="bg-gray-900 h-76 flex items-center justify-center text-white py-12 px-4">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-3xl md:text-4xl font-bold mb-2">Find Jobs</h1>
           <p className="text-gray-400">Showing {displayJobs.length} results</p>
         </div>
@@ -178,12 +150,7 @@ const FindJob = () => {
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-6">
-          <aside
-            className={`lg:w-64 ${showFilters ? "block" : "hidden"} lg:block`}
-          >
-<<<<<<< HEAD
-            <SidebarFilter />
-=======
+          <aside className={`lg:w-64 ${showFilters ? "block" : "hidden"} lg:block`}>
             <SidebarFilter
               selectedCategories={selectedCategories}
               setSelectedCategories={setSelectedCategories}
@@ -198,7 +165,6 @@ const FindJob = () => {
               selectedDate={selectedDate}
               setSelectedDate={setSelectedDate}
             />
->>>>>>> 77fc65b (fix features page)
           </aside>
 
           <main className="flex-1">
@@ -213,12 +179,11 @@ const FindJob = () => {
             </div>
 
             <div className="flex justify-between items-center mb-6">
-              <p className="text-gray-600">
-                Showing {displayJobs.length} results
-              </p>
+              <p className="text-gray-600">Showing {displayJobs.length} results</p>
               <select
                 onChange={handleChange}
                 className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                defaultValue="newest"
               >
                 <option value="newest">Sort by: Newest</option>
                 <option value="oldest">Sort by: Oldest</option>
@@ -228,14 +193,11 @@ const FindJob = () => {
 
             <div className="space-y-4">
               {paginatedJobs.map((job) => (
-                <Card
-                  key={job._id}
-                  className="hover:shadow-lg transition-shadow"
-                >
+                <Card key={job._id} className="hover:shadow-lg transition-shadow">
                   <CardContent className="p-6">
                     <div className="flex flex-col sm:flex-row gap-4">
                       <div className="bg-blue-500 w-12 h-12 rounded-lg flex items-center justify-center text-white text-2xl shrink-0">
-                        {job.jobTitle[0].toUpperCase()}
+                        {job.jobTitle[0]?.toUpperCase()}
                       </div>
 
                       <div className="flex-1">
@@ -258,30 +220,23 @@ const FindJob = () => {
                           </span>
                           <span className="flex items-center gap-1">
                             <MapPin size={16} className="text-gray-400" />
-                            {job.location}
+                            {job.location || "N/A"}
                           </span>
                           <span className="flex items-center gap-1">
-                            Rs {job.salaryRange.min} - Rs {job.salaryRange.max}
+                            Rs {job.salaryRange?.min ?? "N/A"} - Rs {job.salaryRange?.max ?? "N/A"}
                           </span>
                           <span className="flex items-center gap-1">
                             <Calendar size={16} className="text-gray-400" />
-<<<<<<< HEAD
-                            {moment(job.createdAt).fromNow()}
-=======
                             {moment(job.createdAt).format("DD MMM YYYY")}
->>>>>>> 77fc65b (fix features page)
                           </span>
                         </div>
 
                         <div className="flex justify-between items-center">
-                          <div className="flex gap-2">
-                            <Badge
-                              variant="secondary"
-                              className="bg-gray-100 text-gray-700"
-                            >
+                          <div className="flex gap-2 flex-wrap">
+                            <Badge variant="secondary" className="bg-gray-100 text-gray-700">
                               {job.Category || "General"}
                             </Badge>
-                            {job.skillsRequired.map((skill: string) => (
+                            {job.skillsRequired?.map((skill: string) => (
                               <Badge key={skill} variant="outline">
                                 {skill}
                               </Badge>

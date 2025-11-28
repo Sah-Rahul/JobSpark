@@ -1,9 +1,10 @@
+import React from "react";
 import { Checkbox } from "@/components/ui/checkbox";
-<<<<<<< HEAD
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import type { SidebarFilterProps } from "@/types/JobType";
 
-const Category = [
+const Categories = [
   "Engineering",
   "Civil Engineering",
   "Mechanical Engineering",
@@ -27,13 +28,8 @@ const Category = [
   "Legal",
 ];
 
-const SidebarFilter = () => {
-=======
-import { Badge } from "@/components/ui/badge";
-import { JobCategories, type SidebarFilterProps } from "@/types/JobType";
-
-const jobTypes = ["Full time", "Remote", "Internship"];
-const dateOptions = [
+const JobTypes = ["Full Time", "Remote", "Internship", "Freelance"];
+const DateOptions = [
   "All",
   "Last 24 hours",
   "Last 7 days",
@@ -41,7 +37,7 @@ const dateOptions = [
   "Last 30 days",
 ];
 
-const SidebarFilter = ({
+const SidebarFilter: React.FC<SidebarFilterProps> = ({
   selectedCategories,
   setSelectedCategories,
   selectedJobTypes,
@@ -52,8 +48,7 @@ const SidebarFilter = ({
   setSearchTitle,
   selectedDate,
   setSelectedDate,
-}: SidebarFilterProps) => {
->>>>>>> 77fc65b (fix features page)
+}) => {
   return (
     <div className="bg-[#eaf4f4] rounded-lg p-6 space-y-6 sticky top-6">
       <div>
@@ -63,33 +58,16 @@ const SidebarFilter = ({
         <input
           type="text"
           placeholder="Job title or keyword"
-<<<<<<< HEAD
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
-        />
-      </div>
-
-      <div>
-        <h3 className="font-semibold text-gray-900 mb-3">Location</h3>
-        <input
-          type="text"
-          placeholder="City or postcode"
-=======
           value={searchTitle}
           onChange={(e) => setSearchTitle(e.target.value)}
->>>>>>> 77fc65b (fix features page)
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
         />
       </div>
 
       <div>
         <h3 className="font-semibold text-gray-900 mb-3">Category</h3>
-        <div className="space-y-2">
-<<<<<<< HEAD
-          {Category.map((cat, idx) => (
-            <label key={idx} className="flex items-center gap-2 text-sm">
-              <Checkbox />
-=======
-          {JobCategories.map((cat) => (
+        <div className="space-y-2  ">
+          {Categories.map((cat) => (
             <label key={cat} className="flex items-center gap-2 text-sm">
               <Checkbox
                 checked={selectedCategories.includes(cat)}
@@ -103,7 +81,6 @@ const SidebarFilter = ({
                   }
                 }}
               />
->>>>>>> 77fc65b (fix features page)
               <span className="text-gray-700">{cat}</span>
             </label>
           ))}
@@ -113,27 +90,7 @@ const SidebarFilter = ({
       <div>
         <h3 className="font-semibold text-gray-900 mb-3">Job Type</h3>
         <div className="space-y-2">
-<<<<<<< HEAD
-          {["Full Time", "Permanent", "Internship", "Freelance"].map(
-            (type, idx) => (
-              <label key={idx} className="flex items-center gap-2 text-sm">
-                <Checkbox />
-                <span className="text-gray-700">{type}</span>
-              </label>
-            )
-          )}
-        </div>
-      </div>
-
-      <div>
-        <h3 className="font-semibold text-gray-900 mb-3">Experience Level</h3>
-        <div className="space-y-2">
-          {["Entry", "Mid", "Postgrad", "Senior"].map((level, idx) => (
-            <label key={idx} className="flex items-center gap-2 text-sm">
-              <Checkbox />
-              <span className="text-gray-700">{level}</span>
-=======
-          {jobTypes.map((type) => (
+          {JobTypes.map((type) => (
             <label key={type} className="flex items-center gap-2 text-sm">
               <Checkbox
                 checked={selectedJobTypes.includes(type)}
@@ -148,7 +105,6 @@ const SidebarFilter = ({
                 }}
               />
               <span className="text-gray-700">{type}</span>
->>>>>>> 77fc65b (fix features page)
             </label>
           ))}
         </div>
@@ -156,57 +112,33 @@ const SidebarFilter = ({
 
       <div>
         <h3 className="font-semibold text-gray-900 mb-3">Date Posted</h3>
-<<<<<<< HEAD
-        <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm">
-          <option>All</option>
-          <option>Last 24 hours</option>
-          <option>Last 7 days</option>
-          <option>Last 14 days</option>
-          <option>Last 30 days</option>
-=======
         <select
           value={selectedDate}
           onChange={(e) => setSelectedDate(e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
         >
-          {dateOptions.map((option) => (
+          {DateOptions.map((option) => (
             <option key={option}>{option}</option>
           ))}
->>>>>>> 77fc65b (fix features page)
         </select>
       </div>
 
       <div>
-        <h3 className="font-semibold text-gray-900 mb-3">Salary</h3>
+        <h3 className="font-semibold text-gray-900 mb-3">Salary Range (Rs)</h3>
         <div className="flex items-center gap-2 mb-2">
           <input
-<<<<<<< HEAD
-            type="text"
-            placeholder="$0"
-=======
             type="number"
-            placeholder="$0"
+            placeholder="Min"
             value={salaryRange.min ?? ""}
             onChange={(e) =>
               setSalaryRange({ ...salaryRange, min: Number(e.target.value) })
             }
->>>>>>> 77fc65b (fix features page)
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
           />
           <span>-</span>
           <input
-<<<<<<< HEAD
-            type="text"
-            placeholder="$9999"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
-          />
-        </div>
-        <Button className="w-full bg-teal-500 hover:bg-teal-600 text-white">
-          Apply
-        </Button>
-=======
             type="number"
-            placeholder="$9999"
+            placeholder="Max"
             value={salaryRange.max ?? ""}
             onChange={(e) =>
               setSalaryRange({ ...salaryRange, max: Number(e.target.value) })
@@ -214,7 +146,9 @@ const SidebarFilter = ({
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
           />
         </div>
->>>>>>> 77fc65b (fix features page)
+        <Button className="w-full bg-teal-500 hover:bg-teal-600 text-white">
+          Apply
+        </Button>
       </div>
 
       <div>

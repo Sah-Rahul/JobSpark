@@ -66,10 +66,6 @@ export interface CreateJobPayload {
   Category: DepartmentType | string;
   Degree: string;
 }
-<<<<<<< HEAD
-=======
-
-
 
 export type SidebarFilterProps = {
   selectedCategories: string[];
@@ -87,4 +83,3 @@ export type SidebarFilterProps = {
   selectedDate: string;
   setSelectedDate: React.Dispatch<React.SetStateAction<string>>;
 };
->>>>>>> 77fc65b (fix features page)

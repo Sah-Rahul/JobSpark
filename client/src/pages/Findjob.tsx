@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   MapPin,
   Briefcase,
-  DollarSign,
   Calendar,
   Bookmark,
 } from "lucide-react";
@@ -13,30 +12,63 @@ import { getAllJobs } from "@/Api/jobApi";
 import moment from "moment";
 import SidebarFilter from "./SidebarFilter";
 import { Link } from "react-router-dom";
+import Paginations from "@/components/Paginations";
 
 const FindJob = () => {
   const [jobs, setJobs] = useState<any[]>([]);
+  const [displayJobs, setDisplayJobs] = useState<any[]>([]);
   const [showFilters, setShowFilters] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     const fetchJobs = async () => {
       try {
         const res = await getAllJobs();
         setJobs(res);
+        setDisplayJobs(res);
       } catch (err) {
         console.error("Failed to fetch jobs", err);
       }
     };
     fetchJobs();
-    window.scroll(0, 0);
   }, []);
+
+  const paginatedJobs = displayJobs.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const totalPages = Math.ceil(displayJobs.length / itemsPerPage);
+
+  const handleChange = (e: any) => {
+    const value = e.target.value;
+    let sortedJobs = [...jobs];
+
+    if (value === "newest") {
+      sortedJobs.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+    } else if (value === "oldest") {
+      sortedJobs.sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
+    } else if (value === "salary") {
+      sortedJobs.sort((a, b) => b.salaryRange.max - a.salaryRange.max);
+    }
+
+    setDisplayJobs(sortedJobs);
+    setCurrentPage(1);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="bg-gray-900 h-76 flex items-center justify-center text-white py-12 px-4">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold mb-2">Find Jobs</h1>
-          <p className="text-gray-400">Showing {jobs.length} results</p>
+          <p className="text-gray-400">Showing {displayJobs.length} results</p>
         </div>
       </div>
 
@@ -60,16 +92,21 @@ const FindJob = () => {
             </div>
 
             <div className="flex justify-between items-center mb-6">
-              <p className="text-gray-600">Showing {jobs.length} results</p>
-              <select className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm">
-                <option>Sort by: Newest</option>
-                <option>Sort by: Oldest</option>
-                <option>Sort by: Salary</option>
+              <p className="text-gray-600">
+                Showing {displayJobs.length} results
+              </p>
+              <select
+                onChange={handleChange}
+                className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              >
+                <option value="newest">Sort by: Newest</option>
+                <option value="oldest">Sort by: Oldest</option>
+                <option value="salary">Sort by: Salary</option>
               </select>
             </div>
 
             <div className="space-y-4">
-              {jobs.map((job) => (
+              {paginatedJobs.map((job) => (
                 <Card
                   key={job._id}
                   className="hover:shadow-lg transition-shadow"
@@ -95,19 +132,18 @@ const FindJob = () => {
 
                         <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-3">
                           <span className="flex items-center gap-1">
-                            <Briefcase size={16} className="text-gray-400" />{" "}
+                            <Briefcase size={16} className="text-gray-400" />
                             {job.jobType}
                           </span>
                           <span className="flex items-center gap-1">
-                            <MapPin size={16} className="text-gray-400" />{" "}
+                            <MapPin size={16} className="text-gray-400" />
                             {job.location}
                           </span>
                           <span className="flex items-center gap-1">
-                            <DollarSign size={16} className="text-gray-400" /> $
-                            {job.salaryRange.min} - ${job.salaryRange.max}
+                            Rs {job.salaryRange.min} - Rs {job.salaryRange.max}
                           </span>
                           <span className="flex items-center gap-1">
-                            <Calendar size={16} className="text-gray-400" />{" "}
+                            <Calendar size={16} className="text-gray-400" />
                             {moment(job.createdAt).fromNow()}
                           </span>
                         </div>
@@ -126,15 +162,25 @@ const FindJob = () => {
                               </Badge>
                             ))}
                           </div>
-                          <Button className="bg-blue-500 cursor-pointer hover:bg-blue-600 text-white">
-                            Job Details
-                          </Button>
+                          <Link to={`/job/details/${job._id}`}>
+                            <Button className="bg-blue-500 cursor-pointer hover:bg-blue-600 text-white">
+                              Job Details
+                            </Button>
+                          </Link>
                         </div>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
               ))}
+
+              <div className="flex justify-end pt-4">
+                <Paginations
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                />
+              </div>
             </div>
           </main>
         </div>

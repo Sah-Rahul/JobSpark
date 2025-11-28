@@ -9,7 +9,7 @@ import {
   BadgeCheck,
   Clock,
   Briefcase,
-  GraduationCap, 
+  GraduationCap,
   BookmarkPlus,
   ArrowLeft,
 } from "lucide-react";
@@ -162,7 +162,7 @@ const JobDetails = () => {
                       <div>
                         <p className="text-xs text-gray-500">Salary</p>
                         <p className="text-sm font-semibold">
-                          ${job.salaryRange.min}k - ${job.salaryRange.max}k
+                          Rs{job.salaryRange.min}k - Rs{job.salaryRange.max}k
                         </p>
                       </div>
                     </div>
@@ -269,7 +269,7 @@ const JobDetails = () => {
                     <InfoItem
                       icon={<DollarSign className="w-5 h-5 text-emerald-600" />}
                       label="Salary"
-                      value={`$${job.salaryRange.min}k - $${job.salaryRange.max}k`}
+                      value={`Rs ${job.salaryRange.min}k - Rs ${job.salaryRange.max}k`}
                     />
                     <InfoItem
                       icon={<Clock className="w-5 h-5 text-orange-600" />}

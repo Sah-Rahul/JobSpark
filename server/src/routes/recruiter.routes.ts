@@ -20,8 +20,8 @@ recruiterRouter.put(
   isRecruiter,
   updateJob
 );
-recruiterRouter.get("/all/jobs", isAuthenticated, getAllJobs);
-recruiterRouter.get("/get/job-details/:jobId", isAuthenticated, getJobDetails);
+recruiterRouter.get("/all/jobs",  getAllJobs);
+recruiterRouter.get("/get/job-details/:jobId", getJobDetails);
 recruiterRouter.post("/apply/:jobId", isAuthenticated, applyJob);
 recruiterRouter.delete("/delete/job/:jobId", isAuthenticated, isRecruiter, deleteJob);
 recruiterRouter.get("/me", isAuthenticated, isRecruiter, getMyJobs);

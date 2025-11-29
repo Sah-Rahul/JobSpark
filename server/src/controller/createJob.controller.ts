@@ -213,7 +213,6 @@ export const applyJob = TryCacthError(
     await JobApplicationModel.create({
       job: jobId,
       user: userId,
-      resumeUsed: req.body?.resumeUsed || "",
     });
 
     job.appliedUsers = job.appliedUsers || [];

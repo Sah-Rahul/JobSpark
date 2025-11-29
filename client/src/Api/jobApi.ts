@@ -50,6 +50,21 @@ export const getAllJobs = async () => {
 };
 
 export const getJobById = async (id: string) => {
-  const { data } = await axiosInstance.get(`/api/v1/recruiter/get/job-details/${id}`);
+  const { data } = await axiosInstance.get(
+    `/api/v1/recruiter/get/job-details/${id}`
+  );
   return data.data;
+};
+
+export const applyJob = async (jobId: string, formData: any) => {
+  const { data } = await axiosInstance.post(
+    `/api/v1/recruiter/apply/${jobId}`,
+    formData
+  );
+  return data;
+};
+
+export const getUserAppliedJobs = async () => {
+  const { data } = await axiosInstance.get(`/api/v1/user/applied-jobs`);
+  return data;
 };

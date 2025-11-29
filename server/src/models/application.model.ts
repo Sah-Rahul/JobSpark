@@ -14,7 +14,7 @@ const jobApplicationSchema = new Schema(
       required: true,
     },
 
-    resumeUsed: { type: String },
+ 
     status: {
       type: String,
       enum: ["Applied", "Shortlisted", "Rejected", "Selected"],

@@ -5,7 +5,7 @@ import {
   deleteJob,
   getAllJobs,
   getJobDetails, 
-  getMyJobs, 
+  getMyJobs,  
   updateJob,
 } from "../controller/createJob.controller";
 import { isAuthenticated } from "../middleware/auth.middleware";
@@ -22,7 +22,7 @@ recruiterRouter.put(
 );
 recruiterRouter.get("/all/jobs",  getAllJobs);
 recruiterRouter.get("/get/job-details/:jobId", getJobDetails);
-recruiterRouter.post("/apply/:jobId", isAuthenticated, applyJob);
+recruiterRouter.post("/apply/:jobId", isAuthenticated, applyJob); 
 recruiterRouter.delete("/delete/job/:jobId", isAuthenticated, isRecruiter, deleteJob);
 recruiterRouter.get("/me", isAuthenticated, isRecruiter, getMyJobs);
 

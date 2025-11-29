@@ -1,5 +1,18 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, {Document, Schema } from "mongoose";
 import { JobCategories } from "../config/constant";
+
+ 
+
+export interface JobDocument extends Document {
+  jobTitle: string;
+  location: string;
+  salaryRange: { min: number; max: number };
+  jobType: string;
+  logo?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 
 const jobSchema = new Schema(
   {

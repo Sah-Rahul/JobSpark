@@ -16,33 +16,47 @@ import {
 import type { JobType } from "@/types/JobType";
 import moment from "moment";
 
+import { applyJob, getJobById } from "@/Api/jobApi";
+import Navbar from "./Navbar";
+import { getMe } from "@/Api/authApi";
+import { toast } from "react-hot-toast";
+
 function timeSince(date: string | Date) {
   return moment(date).fromNow();
 }
-
-import { getJobById } from "@/Api/jobApi";
-import Navbar from "./Navbar";
 
 const JobDetails = () => {
   const { id } = useParams<{ id: string }>();
   const [job, setJob] = useState<JobType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [alreadyApplied, setAlreadyApplied] = useState(false);
 
   useEffect(() => {
     window.scroll(0, 0);
   }, []);
+
   useEffect(() => {
     if (!id) return;
 
     const fetchJob = async () => {
       try {
         setLoading(true);
-        const data = await getJobById(id);
-        setJob(data);
+
+        const jobData = await getJobById(id);
+
+        const meRes = await getMe();
+        const userId = meRes.data._id;
+        setCurrentUserId(userId);
+
+        const hasApplied = jobData.appliedUsers?.includes(userId) || false;
+        setAlreadyApplied(hasApplied);
+
+        setJob(jobData);
       } catch (err) {
-        setError("Failed to fetch job details");
         console.error(err);
+        setError("Failed to fetch job details");
       } finally {
         setLoading(false);
       }
@@ -51,7 +65,20 @@ const JobDetails = () => {
     fetchJob();
   }, [id]);
 
-  if (loading) {
+  const handleApplyJob = async () => {
+    if (!job || !currentUserId) return;
+
+    try {
+      await applyJob(job._id, { userId: currentUserId });
+      toast.success("Applied successfully!");
+      setAlreadyApplied(true);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to apply for this job");
+    }
+  };
+
+  if (loading)
     return (
       <>
         <Navbar />
@@ -63,33 +90,26 @@ const JobDetails = () => {
         </div>
       </>
     );
-  }
 
-  if (error) {
+  if (error)
     return (
       <>
         <Navbar />
         <div className="min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="text-center">
-            <p className="text-red-600 font-semibold">{error}</p>
-          </div>
+          <p className="text-red-600 font-semibold">{error}</p>
         </div>
       </>
     );
-  }
 
-  if (!job) {
+  if (!job)
     return (
       <>
         <Navbar />
         <div className="min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="text-center">
-            <p className="text-gray-600 text-lg">Job not found</p>
-          </div>
+          <p className="text-gray-600 text-lg">Job not found</p>
         </div>
       </>
     );
-  }
 
   return (
     <>
@@ -135,53 +155,40 @@ const JobDetails = () => {
                   </div>
 
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                    <div className="flex items-center gap-2 text-gray-700">
-                      <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
-                        <Clock className="w-5 h-5 text-blue-600" />
-                      </div>
-                      <div>
-                        <p className="text-xs text-gray-500">Posted</p>
-                        <p className="text-sm font-semibold">
-                          {timeSince(new Date(job.createdAt))}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 text-gray-700">
-                      <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center">
-                        <BadgeCheck className="w-5 h-5 text-green-600" />
-                      </div>
-                      <div>
-                        <p className="text-xs text-gray-500">Type</p>
-                        <p className="text-sm font-semibold">{job.jobType}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 text-gray-700">
-                      <div className="w-10 h-10 bg-emerald-50 rounded-lg flex items-center justify-center">
-                        <DollarSign className="w-5 h-5 text-emerald-600" />
-                      </div>
-                      <div>
-                        <p className="text-xs text-gray-500">Salary</p>
-                        <p className="text-sm font-semibold">
-                          Rs{job.salaryRange.min}k - Rs{job.salaryRange.max}k
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 text-gray-700">
-                      <div className="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center">
-                        <MapPin className="w-5 h-5 text-purple-600" />
-                      </div>
-                      <div>
-                        <p className="text-xs text-gray-500">Location</p>
-                        <p className="text-sm font-semibold">{job.location}</p>
-                      </div>
-                    </div>
+                    <InfoItem
+                      icon={<Clock className="w-5 h-5 text-blue-600" />}
+                      label="Posted"
+                      value={timeSince(new Date(job.createdAt))}
+                    />
+                    <InfoItem
+                      icon={<BadgeCheck className="w-5 h-5 text-green-600" />}
+                      label="Type"
+                      value={job.jobType}
+                    />
+                    <InfoItem
+                      icon={<DollarSign className="w-5 h-5 text-emerald-600" />}
+                      label="Salary"
+                      value={`Rs${job.salaryRange.min}k - Rs${job.salaryRange.max}k`}
+                    />
+                    <InfoItem
+                      icon={<MapPin className="w-5 h-5 text-purple-600" />}
+                      label="Location"
+                      value={job.location}
+                    />
                   </div>
 
                   <Button
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white h-12 text-base font-semibold"
-                    onClick={() => alert("Apply functionality here")}
+                    className={`w-full h-12 text-base font-semibold ${
+                      alreadyApplied
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-blue-600 hover:bg-blue-700 text-white"
+                    }`}
+                    onClick={handleApplyJob}
+                    disabled={alreadyApplied}
                   >
-                    Apply for this Position
+                    {alreadyApplied
+                      ? "Already Applied"
+                      : "Apply for this Position"}
                   </Button>
                 </CardContent>
               </Card>
@@ -209,7 +216,7 @@ const JobDetails = () => {
                     <ul className="space-y-3">
                       {job.KeyResponsibilities.map((text, i) => (
                         <li key={i} className="flex gap-3 text-gray-600">
-                          <span className="w-6 h-6 bg-blue-50 rounded-full flex items-center justify-center text-blue-600 text-sm font-semibold  shrink-0 mt-0.5">
+                          <span className="w-6 h-6 bg-blue-50 rounded-full flex items-center justify-center text-blue-600 text-sm font-semibold shrink-0 mt-0.5">
                             {i + 1}
                           </span>
                           <span className="leading-relaxed">{text}</span>
@@ -235,7 +242,7 @@ const JobDetails = () => {
                     <Badge className="bg-green-100 text-green-700 hover:bg-green-200 px-4 py-1.5 text-sm">
                       {job.Category}
                     </Badge>
-                    {job.skillsRequired.map((skill) => (
+                    {job.skillsRequired?.map((skill) => (
                       <Badge
                         key={skill}
                         variant="outline"
@@ -311,7 +318,7 @@ const InfoItem = ({
   value: string;
 }) => (
   <div className="flex items-center gap-3 py-2">
-    <div className="w-10 h-10 bg-gray-50 rounded-lg flex items-center justify-center  shrink-0">
+    <div className="w-10 h-10 bg-gray-50 rounded-lg flex items-center justify-center shrink-0">
       {icon}
     </div>
     <div className="flex-1 min-w-0">

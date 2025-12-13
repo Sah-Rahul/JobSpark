@@ -6,6 +6,7 @@ import { LoginSchema } from "@/ZodValidation/authZodSchema";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "@/Api/authApi";
 import toast from "react-hot-toast";
+import { useAuthStore } from "@/zustand/useUserData";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const login = useAuthStore((state) => state.login);
 
   const [errors, setErrors] = useState<
     Partial<Record<keyof typeof formData, string>>
@@ -58,6 +60,7 @@ const Login = () => {
     }
     try {
       const res = await loginUser(formData.email, formData.password);
+      login(res.user);
       toast.success(`Welcome back ${res.user?.fullName}`);
       navigate("/");
     } catch (error: any) {

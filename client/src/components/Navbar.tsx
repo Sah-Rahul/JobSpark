@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { PhoneCall, Menu, X } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,11 +10,21 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
+import { useAuthStore } from "@/zustand/useUserData";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [country, setCountry] = useState("🇳🇵 Nepal");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { user, logout } = useAuthStore();
+  console.log(user);
 
+  const handleLogout = () => {
+    logout();
+    toast.success("Logout Sucessfull")
+    navigate("/login");
+  };
   const navMenu = [
     { id: 1, name: "Home", link: "/" },
     { id: 2, name: "Find Job", link: "/find-job" },
@@ -66,9 +76,38 @@ const Navbar = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Button className="bg-blue-700 hover:bg-blue-700 cursor-pointer w-full lg:w-auto">
-            Sign in
-          </Button>
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div className="h-10 w-10   rounded-full cursor-pointer flex items-center justify-center text-white font-semibold">
+                  <img className="h-full w-full overflow-hidden" src="https://avatar.iran.liara.run/public" alt="user" />
+                </div>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent align="end" className="w-40">
+                <DropdownMenuItem onClick={() => navigate("/user/dashboard")}>
+                  Dashboard
+                </DropdownMenuItem>
+
+                <DropdownMenuItem onClick={() => navigate("/profile")}>
+                  Profile
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="text-red-500 focus:text-red-500"
+                >
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Link to={"/signup"}>
+              <Button className="bg-blue-700 hover:bg-blue-700 cursor-pointer w-full lg:w-auto">
+                Sign in
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
 

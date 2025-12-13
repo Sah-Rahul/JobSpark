@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { getUserAppliedJobs } from "@/Api/jobApi";
-import { toast } from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { toast } from "react-hot-toast"; 
 
 type AppliedJobType = {
   _id: string;
@@ -56,6 +54,8 @@ const JobTable = () => {
     fetchAppliedJobs();
   }, []);
 
+
+  
   if (loading)
     return <p className="text-center py-8">Loading applied jobs...</p>;
   if (jobs.length === 0)
@@ -71,7 +71,6 @@ const JobTable = () => {
             <th className="p-3 text-left">Job</th>
             <th className="p-3 text-left">Date Applied</th>
             <th className="p-3 text-left">Status</th>
-            <th className="p-3 text-right">Action</th>
           </tr>
         </thead>
 
@@ -81,7 +80,10 @@ const JobTable = () => {
               <td className="p-3 flex items-center gap-3">
                 <img src={job.logo} alt="" className="w-10 h-10 rounded" />
                 <div>
-                  <p className="font-medium">{job.jobTitle}</p>
+                  <h3 className="text-lg hover:text-blue-500 font-medium text-gray-900 truncate">
+                    {job.jobTitle}
+                  </h3>
+
                   <div className="flex items-center gap-2 text-gray-500 text-xs">
                     <span>{job.location}</span>
                     <span className="text-gray-400">•</span>
@@ -104,13 +106,6 @@ const JobTable = () => {
                   <Check className="w-4 h-4" />
                   Applied
                 </div>
-              </td>
-
-              <td className="p-3 text-right">
-               <Link to={`/job/details/${job._id}`}>
-                <Button variant="outline" className="text-blue-600">
-                  View Details
-                </Button></Link>
               </td>
             </tr>
           ))}

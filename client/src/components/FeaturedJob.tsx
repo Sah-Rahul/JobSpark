@@ -2,6 +2,29 @@ import React, { useEffect, useState } from "react";
 import { Bookmark, ArrowRight, MapPin, DollarSign } from "lucide-react";
 import { getAllJobs } from "@/Api/jobApi";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+
+const FAVORITES_KEY = "favoriteJobs";
+
+const getFavorites = (): string[] => {
+  const stored = localStorage.getItem(FAVORITES_KEY);
+  return stored ? JSON.parse(stored) : [];
+};
+
+const addFavorite = (jobId: string) => {
+  const favorites = getFavorites();
+  if (!favorites.includes(jobId)) {
+    favorites.push(jobId);
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+  }
+};
+
+const removeFavorite = (jobId: string) => {
+  const favorites = getFavorites().filter((id) => id !== jobId);
+  localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+};
+
+const isFavorite = (jobId: string) => getFavorites().includes(jobId);
 
 interface JobItem {
   id: string;
@@ -11,12 +34,12 @@ interface JobItem {
   location: string;
   salaryRange: string;
   daysRemaining: number;
-  isBookmarked: boolean;
 }
 
 const FeaturedJob: React.FC = () => {
   const [jobs, setJobs] = useState<JobItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [favorites, setFavorites] = useState<string[]>(getFavorites());
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -49,7 +72,6 @@ const FeaturedJob: React.FC = () => {
                 (1000 * 60 * 60 * 24)
             )
           ),
-          isBookmarked: false,
         }));
 
         setJobs(mappedJobs);
@@ -62,6 +84,17 @@ const FeaturedJob: React.FC = () => {
 
     fetchJobs();
   }, []);
+
+  const toggleFavorite = (jobId: string) => {
+    if (isFavorite(jobId)) {
+      removeFavorite(jobId);
+      toast.success("Removed from favorites");
+    } else {
+      addFavorite(jobId);
+      toast.success("Added to favorites");
+    }
+    setFavorites(getFavorites());
+  };
 
   if (loading) return <div>Loading jobs...</div>;
   if (jobs.length === 0) return <div>No featured jobs found.</div>;
@@ -131,7 +164,14 @@ const FeaturedJob: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex items-center space-x-3 shrink-0 mt-4 md:mt-0">
-                  <button className="p-2 border border-gray-200 rounded-lg text-gray-500 hover:bg-gray-50 transition-colors">
+                  <button
+                    onClick={() => toggleFavorite(job.id)}
+                    className={`p-2 border rounded-lg transition-colors ${
+                      favorites.includes(job.id)
+                        ? "border-blue-600 text-blue-600 bg-blue-50"
+                        : "border-gray-200 text-gray-500 hover:bg-gray-50"
+                    }`}
+                  >
                     <Bookmark size={20} />
                   </button>
                   <Link to={`/job/details/${job.id}`}>

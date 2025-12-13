@@ -1,6 +1,4 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
 import JobTable from "./JobTable";
 import { useEffect, useState } from "react";
 import { getUserAppliedJobs } from "@/Api/jobApi";
@@ -8,19 +6,27 @@ import toast from "react-hot-toast";
 import { useAuthStore } from "@/zustand/useUserData";
 
 const UserDashboard = () => {
-  const [job, setJob] = useState([]);
+  const [appliedJobsCount, setAppliedJobsCount] = useState(0);
+  const [favoriteJobsCount, setFavoriteJobsCount] = useState(0);
   const { user } = useAuthStore();
-  const fetchJob = async () => {
+
+  const fetchAppliedJobs = async () => {
     try {
       const res = await getUserAppliedJobs();
-      setJob(res.data.length);
+      setAppliedJobsCount(res.data.length);
     } catch (error: any) {
       toast.error(error?.message || "Failed to fetch applied jobs");
     }
   };
 
+  const fetchFavoriteJobs = () => {
+    const fav = localStorage.getItem("favoriteJobs");
+    setFavoriteJobsCount(fav ? JSON.parse(fav).length : 0);
+  };
+
   useEffect(() => {
-    fetchJob();
+    fetchAppliedJobs();
+    fetchFavoriteJobs();
   }, []);
 
   return (
@@ -35,38 +41,18 @@ const UserDashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Card className="border-blue-200">
           <CardContent className="p-4">
-            <p className="text-3xl font-bold">{job}</p>
+            <p className="text-3xl font-bold">{appliedJobsCount}</p>
             <p className="text-gray-500 text-sm">Applied jobs</p>
           </CardContent>
         </Card>
 
         <Card className="border-yellow-200">
           <CardContent className="p-4">
-            <p className="text-3xl font-bold">238</p>
+            <p className="text-3xl font-bold">{favoriteJobsCount}</p>
             <p className="text-gray-500 text-sm">Favorite jobs</p>
           </CardContent>
         </Card>
-
-        <Card className="border-green-200">
-          <CardContent className="p-4">
-            <p className="text-3xl font-bold">574</p>
-            <p className="text-gray-500 text-sm">Job Alerts</p>
-          </CardContent>
-        </Card>
       </div>
-
-      <Alert className="bg-red-50 border-red-300 flex items-center justify-between">
-        <div>
-          <AlertTitle className="text-red-700 font-semibold">
-            Your profile editing is not completed.
-          </AlertTitle>
-          <AlertDescription className="text-sm text-red-600">
-            Complete your profile editing & build your custom Resume
-          </AlertDescription>
-        </div>
-
-        <Button className="bg-red-600 hover:bg-red-700">Edit Profile</Button>
-      </Alert>
 
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold">Recently Applied</h3>

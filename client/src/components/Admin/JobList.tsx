@@ -17,45 +17,39 @@ export interface JobInterface {
   _id: string;
   company: string;
   recruiter: string;
-
   jobTitle: string;
   jobDescription: string;
-
   skillsRequired: string[];
-
   salaryRange: {
     min?: number;
     max?: number;
   };
-
   jobType: "Full-time" | "Part-time" | "Remote" | "Internship";
-
   experienceRequired?: string;
   location?: string;
-
   status: "Active" | "Closed";
-
   KeyResponsibilities: string[];
   ProfessionalSkills: string[];
-
   Degree: string;
   Experience: string;
-
   Category: string;
-
   createdAt?: string;
   updatedAt?: string;
-
   applications?: number;
 }
 
-const JobList = () => {
-  const [jobs, setJobs] = useState<JobInterface[]>([]);
-  const [loading, setLoading] = useState(false);
+interface JobListProps {
+  jobs?: JobInterface[];
+}
+
+const JobList: React.FC<JobListProps> = ({ jobs: propJobs }) => {
+  const [jobs, setJobs] = useState<JobInterface[]>(propJobs || []);
+  const [loading, setLoading] = useState(!propJobs);
   const [openEdit, setOpenEdit] = useState(false);
   const [selectedJob, setSelectedJob] = useState<JobInterface | null>(null);
 
   const fetchAllJobs = async () => {
+    if (propJobs) return;
     try {
       setLoading(true);
       const res = await getMyJobs();
@@ -66,23 +60,21 @@ const JobList = () => {
       setLoading(false);
     }
   };
-  console.log(jobs);
+
+  useEffect(() => {
+    fetchAllJobs();
+  }, []);
+
   const handleDelete = async (id: string) => {
     try {
       await deleteJobs(id);
-
       setJobs((prevJobs) => prevJobs.filter((job) => job._id !== id));
-
       toast.success("Job deleted successfully.");
     } catch (error) {
       toast.error("Failed to delete job");
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    fetchAllJobs();
-  }, []);
 
   return (
     <Card className="p-4">
@@ -94,60 +86,70 @@ const JobList = () => {
         <p>No jobs found.</p>
       ) : (
         <div className="space-y-4">
-          {jobs.map((job, i) => (
-            <div
-              key={i}
-              className="grid grid-cols-1 lg:grid-cols-4 items-center gap-4 border-b pb-4"
-            >
-              <div>
-                <h4 className="font-semibold">{job.jobTitle}</h4>
-                <p className="text-gray-500 text-sm">
-                  {job.jobType} • {job.status || "Active"}
-                </p>
-              </div>
-
-              <Badge
-                className={
-                  job.status === "Active"
-                    ? "bg-blue-500 text-white "
-                    : "bg-red-100 text-red-600"
-                }
+          <div className="space-y-4">
+            {jobs.map((job, i) => (
+              <div
+                key={i}
+                className="grid grid-cols-1 lg:grid-cols-4 items-center gap-4 border-b pb-4"
               >
-                {job.status || "Active"}
-              </Badge>
+                <div>
+                  <h4 className="font-semibold">{job.jobTitle}</h4>
+                  <p className="text-gray-500 text-sm">
+                    {job.jobType} • {job.status || "Active"}
+                  </p>
+                </div>
 
-              <div className="text-gray-600 text-sm">
-                {job.applications || 0} Applications
+                <Badge
+                  className={
+                    job.status === "Active"
+                      ? "bg-blue-500 text-white"
+                      : "bg-red-100 text-red-600"
+                  }
+                >
+                  {job.status || "Active"}
+                </Badge>
+
+                <div className="text-gray-600 text-sm">
+                  {job.applications || 0}{" "}
+                  {job.applications === 1 ? "Application" : "Applications"}
+                </div>
+
+                <div className="flex justify-end">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon">
+                        <MoreHorizontal className="w-4 h-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem>View Applications</DropdownMenuItem>
+                      <DropdownMenuItem>Mark as Closed</DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => {
+                          setSelectedJob(job);
+                          setOpenEdit(true);
+                        }}
+                      >
+                        Edit Job
+                      </DropdownMenuItem>
+                      <div onClick={() => handleDelete(job._id)}>
+                        <DropdownMenuItem>Delete Job</DropdownMenuItem>
+                      </div>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </div>
+            ))}
+            {selectedJob && (
+              <EditJobDialog
+                open={openEdit}
+                setOpen={setOpenEdit}
+                job={selectedJob}
+              />
+            )}
+          </div>
 
-              <div className="flex justify-end">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                      <MoreHorizontal className="w-4 h-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem>View Applications</DropdownMenuItem>
-                    <DropdownMenuItem>Mark as Closed</DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => {
-                        setSelectedJob(job);
-                        setOpenEdit(true);
-                      }}
-                    >
-                      Edit Job
-                    </DropdownMenuItem>
-
-                    <div onClick={() => handleDelete(job._id)}>
-                      <DropdownMenuItem>Delete Job</DropdownMenuItem>
-                    </div>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </div>
-          ))}
           {selectedJob && (
             <EditJobDialog
               open={openEdit}

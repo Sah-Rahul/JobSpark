@@ -1,8 +1,7 @@
 import {
   Home,
   User,
-  Briefcase,
-  Bookmark,
+  Briefcase, 
   Settings,
   LogOut,
   DollarSign,
@@ -13,8 +12,7 @@ const menu = [
   { name: "Overview", icon: Home, path: "/admin/dashboard" },
   { name: "Employer Profile", icon: User, path: "/admin/employer-profile" },
   { name: "Post a Job", icon: Briefcase, path: "/admin/post-job" },
-  { name: "My Jobs", icon: Briefcase, path: "/admin/my-job" },
-  { name: "Saved Candidates", icon: Bookmark, path: "/admin/saved-candidated" },
+  { name: "My Jobs", icon: Briefcase, path: "/admin/my-job" }, 
   { name: "Plans & Billing", icon: DollarSign, path: "/admin/plans-billing" },
   { name: "Settings", icon: Settings, path: "/admin/settings" },
 ];

@@ -68,3 +68,5 @@ export const getUserAppliedJobs = async () => {
   const { data } = await axiosInstance.get(`/api/v1/user/applied-jobs`);
   return data;
 };
+
+ 

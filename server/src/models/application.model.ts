@@ -13,8 +13,6 @@ const jobApplicationSchema = new Schema(
       ref: "User",
       required: true,
     },
-
- 
     status: {
       type: String,
       enum: ["Applied", "Shortlisted", "Rejected", "Selected"],

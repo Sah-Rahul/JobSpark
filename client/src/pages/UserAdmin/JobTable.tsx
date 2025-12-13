@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { getUserAppliedJobs } from "@/Api/jobApi";
 import { toast } from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 type AppliedJobType = {
   _id: string;
@@ -27,15 +28,22 @@ const JobTable = () => {
       try {
         setLoading(true);
         const res = await getUserAppliedJobs();
-        const appliedJobs = res.data.map((job: any) => ({
-          _id: job._id,
-          jobTitle: job.jobTitle,
-          location: job.location,
-          salaryRange: job.salaryRange,
-          jobType: job.jobType,
-          appliedDate: job.appliedDate || job.createdAt,
-          logo: job.logo || `https://via.placeholder.com/40?text=${job.jobTitle.charAt(0)}`,
-        }));
+
+        const appliedJobs = res.data.map((application: any) => {
+          const job = application.job;
+          return {
+            _id: application._id,
+            jobTitle: job.jobTitle,
+            location: job.location,
+            salaryRange: job.salaryRange,
+            jobType: job.jobType,
+            appliedDate: application.createdAt,
+            logo:
+              job.logo ||
+              `https://via.placeholder.com/40?text=${job.jobTitle.charAt(0)}`,
+          };
+        });
+
         setJobs(appliedJobs);
       } catch (err) {
         console.error(err);
@@ -48,8 +56,12 @@ const JobTable = () => {
     fetchAppliedJobs();
   }, []);
 
-  if (loading) return <p className="text-center py-8">Loading applied jobs...</p>;
-  if (jobs.length === 0) return <p className="text-center py-8">You have not applied to any jobs yet.</p>;
+  if (loading)
+    return <p className="text-center py-8">Loading applied jobs...</p>;
+  if (jobs.length === 0)
+    return (
+      <p className="text-center py-8">You have not applied to any jobs yet.</p>
+    );
 
   return (
     <div className="bg-white rounded-lg border overflow-hidden">
@@ -76,12 +88,16 @@ const JobTable = () => {
                     <span>
                       Rs {job.salaryRange.min}k - Rs {job.salaryRange.max}k
                     </span>
-                    <Badge className="bg-blue-100 text-blue-600">{job.jobType}</Badge>
+                    <Badge className="bg-blue-100 text-blue-600">
+                      {job.jobType}
+                    </Badge>
                   </div>
                 </div>
               </td>
 
-              <td className="p-3">{new Date(job.appliedDate).toLocaleDateString()}</td>
+              <td className="p-3">
+                {new Date(job.appliedDate).toLocaleDateString()}
+              </td>
 
               <td className="p-3">
                 <div className="flex items-center gap-1 text-green-600">
@@ -91,9 +107,10 @@ const JobTable = () => {
               </td>
 
               <td className="p-3 text-right">
+               <Link to={`/job/details/${job._id}`}>
                 <Button variant="outline" className="text-blue-600">
                   View Details
-                </Button>
+                </Button></Link>
               </td>
             </tr>
           ))}

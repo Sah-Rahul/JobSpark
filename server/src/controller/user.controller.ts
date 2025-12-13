@@ -18,6 +18,7 @@ import { sendToken } from "../utils/SendToken";
 import { sendEmail } from "../services/sendEmail";
 import { verifyEmail } from "../services/verifyEmail";
 import { resetPasswordEmail } from "../services/resetPassword";
+import JobApplicationModel from "../models/application.model";
 
 interface AuthRequest extends Request {
   user?: any;
@@ -388,5 +389,30 @@ export const updateProfile = TryCacthError(
     return res
       .status(200)
       .json(new ApiResponse(200, user, "Profile updated successfully"));
+  }
+);
+
+export const getAppliedJobs = TryCacthError(
+  async (req: AuthRequest, res: Response) => {
+    const userId = req.user?.id;
+    const role = req.user?.role;
+
+    if (!userId || !role) {
+      throw new ApiError(401, "Unauthorized user.");
+    }
+
+    if (role !== "employee") {
+      throw new ApiError(403, "Only employees can view applied jobs.");
+    }
+
+    const applications = await JobApplicationModel.find({ user: userId })
+      .populate("job")  
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      success: true,
+      message: "Applied jobs fetched successfully.",
+      data: applications,
+    });
   }
 );

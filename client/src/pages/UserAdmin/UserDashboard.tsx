@@ -2,12 +2,31 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import JobTable from "./JobTable";
+import { useEffect, useState } from "react";
+import { getUserAppliedJobs } from "@/Api/jobApi";
+import toast from "react-hot-toast";
+import { useAuthStore } from "@/zustand/useUserData";
 
 const UserDashboard = () => {
+  const [job, setJob] = useState([]);
+  const { user } = useAuthStore();
+  const fetchJob = async () => {
+    try {
+      const res = await getUserAppliedJobs();
+      setJob(res.data.length);
+    } catch (error: any) {
+      toast.error(error?.message || "Failed to fetch applied jobs");
+    }
+  };
+
+  useEffect(() => {
+    fetchJob();
+  }, []);
+
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-xl font-semibold">Hello, Esther Howard</h2>
+        <h2 className="text-xl font-semibold">Hello, {user?.fullName}</h2>
         <p className="text-gray-500 text-sm">
           Here is your daily activities and job alerts
         </p>
@@ -16,7 +35,7 @@ const UserDashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Card className="border-blue-200">
           <CardContent className="p-4">
-            <p className="text-3xl font-bold">589</p>
+            <p className="text-3xl font-bold">{job}</p>
             <p className="text-gray-500 text-sm">Applied jobs</p>
           </CardContent>
         </Card>

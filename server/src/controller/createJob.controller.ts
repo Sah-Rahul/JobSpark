@@ -41,7 +41,6 @@ export const createJob = TryCacthError(
     const {
       Category,
       Degree,
-      Experience,
       jobDescription,
       jobTitle,
       jobType,

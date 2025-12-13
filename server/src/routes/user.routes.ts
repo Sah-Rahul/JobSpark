@@ -1,5 +1,5 @@
 import {Router} from "express"
-import { forgotPassword, getMe, logoutUser, resendOtp, resetPassword, updateProfile, userLogin, userRegister, verifyEmails } from "../controller/user.controller"
+import { forgotPassword, getAppliedJobs, getMe, logoutUser, resendOtp, resetPassword, updateProfile, userLogin, userRegister, verifyEmails } from "../controller/user.controller"
 import { isAuthenticated } from "../middleware/auth.middleware"
 
 
@@ -14,4 +14,6 @@ userRouter.post('/resend-otp',isAuthenticated, resendOtp)
 userRouter.post("/reset-password/:token", resetPassword);
 userRouter.get('/me',isAuthenticated, getMe) 
 userRouter.put("/update/profile/:userId", isAuthenticated, updateProfile);
+userRouter.get("/applied-jobs", isAuthenticated, getAppliedJobs);
 export default userRouter
+ 

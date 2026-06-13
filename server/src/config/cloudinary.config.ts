@@ -1,3 +1,6 @@
+import dotenv from "dotenv"
+dotenv.config()
+
 import { v2 as cloudinary } from "cloudinary";
 
 cloudinary.config({
@@ -21,7 +24,7 @@ export const uploadToCloudinary = (fileBuffer: Buffer, folder: string) =>
       (err, result) => {
         if (err || !result) return reject(err);
         resolve(result as CloudinaryUploadResult);
-      }
+      },
     );
     stream.end(fileBuffer);
   });

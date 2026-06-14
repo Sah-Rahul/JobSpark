@@ -1,9 +1,8 @@
-import { startEmailConsumer } from "./consumers/email.consumer";
-// future mein aur aayenge:
-// import { startNotificationConsumer } from "./notification.consumer";
-// import { startJobAlertConsumer } from "./jobAlert.consumer";
+import { startEmailConsumer, startPasswordResetConsumer, startWelcomeEmailConsumer } from "./consumers/email.consumer";
 
 export const startAllConsumers = async (): Promise<void> => {
-  await startEmailConsumer(); 
+  await startEmailConsumer();
+  await startPasswordResetConsumer()
+  await startWelcomeEmailConsumer()
   console.log("✅ All consumers started");
 };

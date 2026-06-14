@@ -13,7 +13,7 @@ export const sendEmail = async ({ email, subject, html }: SendEmailProps) => {
   if (!process.env.SMTP_HOST || !process.env.SMTP_PORT || !process.env.SMTP_MAIL || !process.env.SMTP_PASSWORD) {
     throw new Error("SMTP config missing in .env file");
   }
-console.log("Sending email to:", email);
+
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT),

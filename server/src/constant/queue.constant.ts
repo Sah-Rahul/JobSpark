@@ -9,3 +9,15 @@ export interface EmailVerificationPayload {
   fullName: string;
   token: string;
 }
+
+export interface PasswordResetPayload {
+  email: string;
+  fullName: string;
+  token: string;
+}
+
+export interface WelcomePayload {
+  email: string;     
+  fullName: string;
+  dashboardURL: string;
+}

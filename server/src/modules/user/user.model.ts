@@ -5,7 +5,6 @@ export interface IUser extends Document {
   fullName: string;
   email: string;
   password: string;
-  phoneNumber?: string;
 
   role: UserRole;
   status: AccountStatus;
@@ -48,10 +47,6 @@ const userSchema = new Schema<IUser>(
       type: String,
       required: true,
       select: false,
-    },
-
-    phoneNumber: {
-      type: String,
     },
 
     role: {
@@ -110,10 +105,9 @@ const userSchema = new Schema<IUser>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-userSchema.index({ email: 1 });
 userSchema.index({ role: 1, status: 1 });
 
 const UserModel = mongoose.model<IUser>("User", userSchema);

@@ -1,7 +1,7 @@
-import { startEmailConsumer, startPasswordResetConsumer, startWelcomeEmailConsumer } from "./consumers/email.consumer";
+import { startPasswordResetConsumer, startVerificationEmailConsumer, startWelcomeEmailConsumer } from "./consumers/email.consumer";
 
 export const startAllConsumers = async (): Promise<void> => {
-  await startEmailConsumer();
+  await startVerificationEmailConsumer();
   await startPasswordResetConsumer()
   await startWelcomeEmailConsumer()
   console.log("✅ All consumers started");

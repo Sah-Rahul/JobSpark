@@ -1,6 +1,6 @@
 export const AUTH_MESSAGES = {
   REGISTER_SUCCESS: "Registration successful. Please verify your email.",
-  LOGIN_SUCCESS: "Login successful",
+  LOGIN_SUCCESS: "Welcome back",
   LOGOUT_SUCCESS: "Logout successful",
   EMAIL_VERIFIED: "Email verified successfully",
   EMAIL_ALREADY_VERIFIED: "Email is already verified",

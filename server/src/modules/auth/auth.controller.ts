@@ -46,11 +46,12 @@ export const loginUser = asyncHandler(
 
     return res
       .status(HTTP_STATUS.OK)
-      .json(new ApiResponse(HTTP_STATUS.OK, user, AUTH_MESSAGES.LOGIN_SUCCESS));
+      .json(new ApiResponse(HTTP_STATUS.OK, user, `${AUTH_MESSAGES.LOGIN_SUCCESS}, ${user.fullName}`));
   },
 );
 
-export const logoutUser = asyncHandler(async (req: Request, res: Response) => {
+export const logoutUser = asyncHandler(
+  async (req: Request, res: Response) => {
   res.clearCookie("accessToken", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

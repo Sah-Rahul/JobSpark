@@ -1,6 +1,6 @@
 export enum UserRole {
   JOBSEEKER = "jobseeker",
-  EMPLOYER = "employer",
+  Recruiter = "employer",
   ADMIN = "admin",
 }
 

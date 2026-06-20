@@ -1,9 +1,7 @@
-import React from 'react'
+import Overview from "@/src/components/jobseeker/Overview";
 
-const page = () => {
-  return (
-    <div>page</div>
-  )
-}
+const DashboardRoute = () => {
+  return <Overview />;
+};
 
-export default page
+export default DashboardRoute;

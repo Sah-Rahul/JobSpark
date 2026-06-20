@@ -10,34 +10,56 @@ import {
   Users,
   Settings,
   LogOut,
+  CircleUser,
+  CirclePlus,
+  BriefcaseBusiness,
+  Bookmark,
+  Book,
+  Building2,
 } from "lucide-react";
 
 const NAV_ITEMS = [
   {
     icon: LayoutDashboard,
-    label: "Overview",
+    label: "Dashboard",
     badge: null,
-    href: "/jobseeker",
+    href: "/employee",
   },
   {
-    icon: BookOpen,
-    label: "Applied jobs",
+    icon: CircleUser,  
+    label: "Employers Profile",
     badge: null,
-    href: "/jobseeker/applied-jobs",
+    href: "/employee/employee-profile",
   },
   {
-    icon: Tag,
-    label: "Favorite jobs",
+    icon: BriefcaseBusiness,  
+    label: "My jobs",
     badge: null,
-    href: "/jobseeker/favorite-jobs",
+    href: "/employee/my-jobs",
   },
   {
-    icon: Users,
-    label: "Job Alert",
+    icon: CirclePlus, 
+    label: "Post Job",
     badge: null,
-    href: "/jobseeker/job-alerts",
+    href: "/employee/post-job",
   },
-  { icon: Settings, label: "Settings", href: "/jobseeker/settings" },
+  {
+    icon: Bookmark,
+    label: "Saved Candidate",
+    badge: null,
+    href: "/employee/save-candidate",
+  },{
+    icon: Book,
+    label: "Plans & Billing",
+    badge: null,
+    href: "/employee/plans-billing",
+  },{
+    icon: Building2,
+    label: "My Companies",
+    badge: null,
+    href: "/employee/my-company",
+  },
+  { icon: Settings, label: "Settings", href: "/employee/settings" },
 ];
 
 const BOTTOM_ITEMS = [{ icon: LogOut, label: "Logout", href: "/logout" }];

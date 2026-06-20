@@ -116,7 +116,6 @@ const appliedJobs = [
   },
 ];
 
-// Re-mapping status pills style variables
 const getStatusStyles = (status: string) => {
   switch (status) {
     case "Shortlisted":
@@ -179,45 +178,23 @@ const Overview = () => {
         })}
       </div>
 
-      <div className="bg-rose-500/10 dark:bg-rose-950/20 border border-rose-500/20 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
-        <div className="flex items-center gap-4 text-center sm:text-left flex-col sm:flex-row">
-          <div className="w-11 h-11 rounded-full bg-rose-500/20 border border-rose-500/30 overflow-hidden flex items-center justify-center shrink-0">
-            <div className="w-8 h-8 rounded-full bg-slate-900 text-white text-[11px] font-bold flex items-center justify-center">
-              EH
-            </div>
-          </div>
-          <div className="space-y-0.5">
-            <h2 className="text-rose-600 dark:text-rose-400 font-semibold text-sm leading-tight">
-              Your profile editing is not completed.
-            </h2>
-            <p className="text-slate-500 dark:text-slate-400 text-xs">
-              Complete your profile editing & build your custom Resume
-            </p>
-          </div>
-        </div>
-        <button className="bg-rose-500 text-white hover:bg-rose-600 dark:bg-rose-600 dark:hover:bg-rose-700 text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5 shadow-sm shadow-rose-500/10 shrink-0 cursor-pointer border-none">
-          Edit Profile
-          <ArrowRight size={13} />
-        </button>
-      </div>
-
       <div className="bg-white dark:bg-[#06080c] rounded-2xl border border-slate-100 dark:border-white/5 shadow-sm overflow-hidden">
-        <div className="px-6 py-4.5 flex items-center justify-between border-b border-slate-100 dark:border-white/5 bg-slate-50/30 dark:bg-white/[0.01]">
+        <div className="px-6 py-4.5 flex items-center justify-between border-b border-slate-100 dark:border-white/5 bg-slate-50/30 dark:bg-white/1">
           <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200">
             Recently Applied
           </h3>
           <Link href={"/jobseeker/applied-jobs"}>
-          <button className="text-xs font-semibold text-[#09b89b] hover:text-[#079e85] transition-colors flex items-center gap-1 cursor-pointer">
-            View all
-            <ArrowRight size={14} />
-          </button>
+            <button className="text-xs font-semibold text-[#09b89b] hover:text-[#079e85] transition-colors flex items-center gap-1 cursor-pointer">
+              View all
+              <ArrowRight size={14} />
+            </button>
           </Link>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.02]">
+              <tr className="border-b border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/2">
                 <th className="px-6 py-3 text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest w-[40%]">
                   Jobs
                 </th>
@@ -318,7 +295,7 @@ const Overview = () => {
           </table>
         </div>
 
-        <div className="py-4 text-center border-t border-slate-100 dark:border-white/5 bg-slate-50/20 dark:bg-white/[0.01]">
+        <div className="py-4 text-center border-t border-slate-100 dark:border-white/5 bg-slate-50/20 dark:bg-white/1">
           <p className="text-[10px] font-medium text-slate-400 dark:text-slate-600">
             © {new Date().getFullYear()} JobSpark - Job Portal. All rights
             Reserved

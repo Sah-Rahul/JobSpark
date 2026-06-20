@@ -1,4 +1,4 @@
-import { Home } from "@/src/components/Home";
+import  Home  from "@/src/components/Home";
 import Layout from "@/src/components/Layout";
 
 const page = () => {

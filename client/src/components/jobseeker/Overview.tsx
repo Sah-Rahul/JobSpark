@@ -14,7 +14,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-// Stats with accurate branding styles matching the layout
 const statsData = [
   {
     id: 1,
@@ -115,6 +114,7 @@ const appliedJobs = [
       "bg-blue-600 text-white flex items-center justify-center text-xs font-bold",
   },
 ];
+
 
 const getStatusStyles = (status: string) => {
   switch (status) {

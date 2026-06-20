@@ -1,4 +1,6 @@
-import useSWRMutation from "swr/mutation";
+"use client";
+
+import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -8,28 +10,24 @@ import { authServices } from "@/src/api/auth";
 export const useResetPassword = () => {
   const router = useRouter();
 
-  const { trigger, isMutating } = useSWRMutation(
-    "/auth/reset-password",
-    (_key, { arg }: { arg: ResetPasswordPayload }) =>
-      authServices.resetPassword(arg),
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: (payload: ResetPasswordPayload) =>
+      authServices.resetPassword(payload),
 
-    {
-      onSuccess: (data) => {
-        toast.success(data.message);
-        router.push("/auth/login");
-      },
+    onSuccess: (data) => {
+      toast.success(data?.message || "Password reset successfully!");
 
-      onError: (error: any) => {
-        toast.error(error?.response?.data?.message ?? "Something went wrong");
-      },
-
-      throwOnError: false,
+      router.push("/auth/login");
     },
-  );
+
+    onError: (error: any) => {
+      const message = error?.response?.data?.message ?? "Something went wrong";
+      toast.error(message);
+    },
+  });
 
   return {
-    resetPassword: trigger,
-
-    isLoading: isMutating,
+    resetPassword: mutateAsync,
+    isLoading: isPending,
   };
 };

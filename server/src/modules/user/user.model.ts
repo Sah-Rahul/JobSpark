@@ -1,6 +1,19 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { AccountStatus, UserRole } from "../../enum/user.enum";
 
+interface ICvResume {
+  name: string;
+  url: string;
+  publicId: string;
+  size: string;
+  uploadedAt: Date;
+}
+
+interface ISocialLink {
+  platform: string;
+  url: string;
+}
+
 export interface IUser extends Document {
   fullName: string;
   email: string;
@@ -18,6 +31,16 @@ export interface IUser extends Document {
   emailVerificationToken?: string;
   emailVerificationExpires?: Date;
 
+  education?: string;
+  experience?: string;
+
+  title?: string;
+  cvResumes?: ICvResume[];
+  socialLinks?: ISocialLink[];
+
+  nationality?: string;
+  biography?: string;
+
   passwordResetToken?: string;
   passwordResetExpires?: Date;
 
@@ -26,6 +49,25 @@ export interface IUser extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
+
+const cvResumeSchema = new Schema<ICvResume>(
+  {
+    name: { type: String, required: true },
+    url: { type: String, required: true },
+    publicId: { type: String, required: true },
+    size: { type: String, required: true },
+    uploadedAt: { type: Date, default: Date.now },
+  },
+  { _id: false },
+);
+
+const socialLinkSchema = new Schema<ISocialLink>(
+  {
+    platform: { type: String, required: true },
+    url: { type: String, required: true },
+  },
+  { _id: false },
+);
 
 const userSchema = new Schema<IUser>(
   {
@@ -61,47 +103,29 @@ const userSchema = new Schema<IUser>(
       default: AccountStatus.PENDING,
     },
 
-    avatar: {
-      type: String,
-    },
+    avatar: { type: String },
+    publicId: { type: String },
 
-    publicId: {
-      type: String,
-    },
+    isEmailVerified: { type: Boolean, default: false },
+    isWelcomeEmailSent: { type: Boolean, default: false },
 
-    isEmailVerified: {
-      type: Boolean,
-      default: false,
-    },
+    emailVerificationToken: { type: String, select: false },
+    emailVerificationExpires: { type: Date, select: false },
 
-    isWelcomeEmailSent: {
-      type: Boolean,
-      default: false,
-    },
+    education: { type: String },
+    experience: { type: String },
+    title: { type: String },
 
-    emailVerificationToken: {
-      type: String,
-      select: false,
-    },
+    cvResumes: { type: [cvResumeSchema], default: [] },
+    socialLinks: { type: [socialLinkSchema], default: [] },
 
-    emailVerificationExpires: {
-      type: Date,
-      select: false,
-    },
+    nationality: { type: String },
+    biography: { type: String },
 
-    passwordResetToken: {
-      type: String,
-      select: false,
-    },
+    passwordResetToken: { type: String, select: false },
+    passwordResetExpires: { type: Date, select: false },
 
-    passwordResetExpires: {
-      type: Date,
-      select: false,
-    },
-
-    lastLogin: {
-      type: Date,
-    },
+    lastLogin: { type: Date },
   },
   {
     timestamps: true,

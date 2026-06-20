@@ -12,13 +12,10 @@ export const useLogin = () => {
     onSuccess: (data) => {
       toast.success(data.message);
 
-       const role = data.data.role;  
+      const role = data.data.role;
 
-      console.log("===========================>", data)
-      console.log("===========================>", role)
-      
       const roleRoutes: Record<string, string> = {
-        jobseeker: "/jobseeker/dashboard",
+        jobseeker: "/jobseeker/overview",
         employer: "/employer/dashboard",
         admin: "/admin/dashboard",
       };

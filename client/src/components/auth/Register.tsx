@@ -67,7 +67,7 @@ const Register = () => {
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 sm:p-6 lg:p-8 font-sans">
       <div className="w-full max-w-md bg-white rounded-2xl border border-slate-100 shadow-sm p-6 sm:p-10 space-y-8">
         <div className="flex items-center gap-2">
-          <div className="bg-[#ea580c] p-1.5 rounded-lg text-white">
+          <div className="bg-[#1a7269] p-1.5 rounded-lg text-white">
             <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
               <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z" />
             </svg>
@@ -96,7 +96,7 @@ const Register = () => {
             Already have an account?{" "}
             <Link
               href="/auth/login"
-              className="text-[#1a73e8] hover:text-[#ea580c] transition ease-in duration-300 font-medium hover:underline"
+              className="text-[#1a73e8] hover:text-[#1a7269] transition ease-in duration-300 font-medium hover:underline"
             >
               Log In
             </Link>
@@ -111,7 +111,7 @@ const Register = () => {
               onChange={handleChange}
               type="text"
               placeholder="Full Name"
-              className={`h-11 bg-white border-slate-200 focus-visible:ring-[#ea580c]
+              className={`h-11 bg-white border-slate-200 focus-visible:ring-[#1a7269]
                 ${fieldErrors.fullName ? "border-red-400 focus-visible:ring-red-400" : ""}`}
             />
             {fieldErrors.fullName && (
@@ -128,7 +128,7 @@ const Register = () => {
               onChange={handleChange}
               type="email"
               placeholder="Email address"
-              className={`h-11 bg-white border-slate-200 focus-visible:ring-[#ea580c]
+              className={`h-11 bg-white border-slate-200 focus-visible:ring-[#1a7269]
                 ${fieldErrors.email ? "border-red-400 focus-visible:ring-red-400" : ""}`}
             />
             {fieldErrors.email && (
@@ -144,7 +144,7 @@ const Register = () => {
                 onChange={handleChange}
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
-                className={`h-11 bg-white border-slate-200 pr-10 focus-visible:ring-[#ea580c]
+                className={`h-11 bg-white border-slate-200 pr-10 focus-visible:ring-[#1a7269]
                   ${fieldErrors.password ? "border-red-400 focus-visible:ring-red-400" : ""}`}
               />
             </div>
@@ -163,7 +163,7 @@ const Register = () => {
                 onChange={handleChange}
                 type={showPassword ? "text" : "password"}
                 placeholder="Confirm Password"
-                className={`h-11 bg-white border-slate-200 pr-10 focus-visible:ring-[#ea580c]
+                className={`h-11 bg-white border-slate-200 pr-10 focus-visible:ring-[#1a7269]
                   ${fieldErrors.confirmPassword ? "border-red-400 focus-visible:ring-red-400" : ""}`}
               />
               <button
@@ -184,7 +184,7 @@ const Register = () => {
           <Button
             type="submit"
             disabled={isLoading}
-            className="w-full h-11 bg-[#ea580c] hover:bg-[#d44f0a] text-white font-medium flex items-center justify-center gap-2 rounded-md transition-colors mt-6 cursor-pointer"
+            className="w-full h-11 bg-[#1a7269] hover:bg-[#d44f0a] text-white font-medium flex items-center justify-center gap-2 rounded-md transition-colors mt-6 cursor-pointer"
           >
             {isLoading ? (
               <Loader2 size={18} className="animate-spin" />

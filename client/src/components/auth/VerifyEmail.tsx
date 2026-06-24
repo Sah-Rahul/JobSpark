@@ -50,7 +50,7 @@ const VerifyEmail = () => {
 
   const Logo = () => (
     <div className="flex items-center gap-2 self-start mb-10">
-      <div className="bg-[#ea580c] p-1.5 rounded-lg text-white">
+      <div className="bg-[#1a7269] p-1.5 rounded-lg text-white">
         <svg className="w-4.5 h-4.5 fill-current" viewBox="0 0 24 24">
           <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z" />
         </svg>
@@ -69,7 +69,7 @@ const VerifyEmail = () => {
         {status === "loading" && (
           <div className="w-full flex flex-col items-center">
             <div className="w-18 h-18 rounded-full bg-orange-50 border border-orange-200 flex items-center justify-center mb-6">
-              <Loader2 className="w-8 h-8 text-[#ea580c] animate-spin" />
+              <Loader2 className="w-8 h-8 text-[#1a7269] animate-spin" />
             </div>
             <h1 className="text-xl font-semibold text-slate-900 mb-2">
               Verifying your email
@@ -78,7 +78,7 @@ const VerifyEmail = () => {
               Please wait while we confirm your account...
             </p>
             <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
-              <div className="h-full bg-[#ea580c] rounded-full animate-pulse w-1/2" />
+              <div className="h-full bg-[#1a7269] rounded-full animate-pulse w-1/2" />
             </div>
           </div>
         )}
@@ -114,7 +114,7 @@ const VerifyEmail = () => {
             <div className="w-full border-t border-slate-100 pt-6 flex flex-col gap-3">
               <Button
                 onClick={() => router.push("/auth/register")}
-                className="w-full h-10 bg-[#ea580c] hover:bg-[#d44f0a] text-white flex items-center justify-center gap-2"
+                className="w-full h-10 bg-[#1a7269] hover:bg-[#d44f0a] text-white flex items-center justify-center gap-2"
               >
                 <ArrowLeft className="w-4 h-4" />
                 Back to register

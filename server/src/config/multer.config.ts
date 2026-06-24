@@ -11,14 +11,18 @@ const fileFilter = (
   cb: FileFilterCallback,
 ) => {
   const ext = path.extname(file.originalname).toLowerCase();
-  if (ext !== ".jpg" && ext !== ".jpeg" && ext !== ".png") {
-    return cb(new Error("Only images are allowed"));
+  
+
+  
+  if (ext === ".jpg" || ext === ".jpeg" || ext === ".png" || ext === ".pdf") {
+    return cb(null, true); 
   }
+
   cb(null, true);
 };
 
 export const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB max
 });

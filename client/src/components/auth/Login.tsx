@@ -6,14 +6,12 @@ import { Input } from "@/components/ui/input";
 import { Eye, EyeOff, ArrowRight, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { loginSchema } from "@/src/lib/validations/auth.schema";
-import { useLogin } from "@/src/hooks/auth/useLogin";
-import { useRouter } from "next/navigation";
+import { useLogin } from "@/src/hooks/auth/useLogin"; 
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
-  const { login, isLoading } = useLogin();
-  const router = useRouter();
+  const { login, isLoading } = useLogin(); 
 
   const [formData, setFormData] = useState({
     email: "",
@@ -57,7 +55,7 @@ const Login = () => {
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 sm:p-6 lg:p-8 font-sans">
       <div className="w-full max-w-md bg-white rounded-2xl border border-slate-100 shadow-sm p-6 sm:p-10 space-y-8">
         <div className="flex items-center gap-2">
-          <div className="bg-[#ea580c] p-1.5 rounded-lg text-white">
+          <div className="bg-[#1a7269] p-1.5 rounded-lg text-white">
             <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
               <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z" />
             </svg>
@@ -75,7 +73,7 @@ const Login = () => {
             Don&apos;t have an account?{" "}
             <Link
               href="/auth/register"
-              className="text-[#1a73e8] hover:text-[#ea580c] transition ease-in duration-300 font-medium hover:underline"
+              className="text-[#1a73e8] hover:text-[#1a7269] transition ease-in duration-300 font-medium hover:underline"
             >
               Sign Up
             </Link>
@@ -132,14 +130,14 @@ const Login = () => {
             )}
           </div>
 
-          <div className="flex items-center justify-end text-[#ea580c] hover:text-[#d44f0a] text-sm">
+          <div className="flex items-center justify-end text-[#1a7269] hover:text-[#1a7269] text-sm">
             <Link href={"/auth/forget-password"}>Forget password?</Link>
           </div>
 
           <Button
             type="submit"
             disabled={isLoading}
-            className="w-full h-11 bg-[#ea580c] hover:bg-[#d44f0a] text-white font-medium flex items-center justify-center gap-2 rounded-md transition-colors mt-6 cursor-pointer"
+            className="w-full h-11 bg-[#1a7269] hover:bg-[#1a7269] text-white font-medium flex items-center justify-center gap-2 rounded-md transition-colors mt-6 cursor-pointer"
           >
             {isLoading ? (
               <Loader2 size={18} className="animate-spin" />

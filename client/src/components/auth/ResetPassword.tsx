@@ -67,7 +67,7 @@ const ResetPassword = () => {
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 sm:p-6 lg:p-8 font-sans">
       <div className="w-full max-w-md bg-white rounded-2xl border border-slate-100 shadow-sm p-6 sm:p-10 space-y-8">
         <div className="flex items-center gap-2">
-          <div className="bg-[#ea580c] p-1.5 rounded-lg text-white">
+          <div className="bg-[#1a7269] p-1.5 rounded-lg text-white">
             <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
               <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z" />
             </svg>
@@ -85,7 +85,7 @@ const ResetPassword = () => {
             Go back to{" "}
             <Link
               href="/auth/login"
-              className="text-[#1a73e8] hover:text-[#ea580c] transition font-medium hover:underline"
+              className="text-[#1a73e8] hover:text-[#1a7269] transition font-medium hover:underline"
             >
               Sign in
             </Link>
@@ -94,7 +94,7 @@ const ResetPassword = () => {
             Don't have account?{" "}
             <Link
               href="/auth/register"
-              className="text-[#1a73e8] hover:text-[#ea580c] transition font-medium hover:underline"
+              className="text-[#1a73e8] hover:text-[#1a7269] transition font-medium hover:underline"
             >
               Create Account
             </Link>
@@ -109,7 +109,7 @@ const ResetPassword = () => {
               value={formData.newPassword}
               type={showPassword ? "text" : "password"}
               placeholder="New password"
-              className={`h-11 bg-white border-slate-200 focus-visible:ring-[#ea580c] pr-10
+              className={`h-11 bg-white border-slate-200 focus-visible:ring-[#1a7269] pr-10
                 ${fieldErrors.newPassword ? "border-red-400 focus-visible:ring-red-400" : ""}`}
             />
           </div>
@@ -121,7 +121,7 @@ const ResetPassword = () => {
               value={formData.confirmPassword}
               type={showPassword ? "text" : "password"}
               placeholder="Confirm password"
-              className={`h-11 bg-white border-slate-200 focus-visible:ring-[#ea580c] pr-10
+              className={`h-11 bg-white border-slate-200 focus-visible:ring-[#1a7269] pr-10
                 ${fieldErrors.confirmPassword ? "border-red-400 focus-visible:ring-red-400" : ""}`}
             />
             <button
@@ -141,7 +141,7 @@ const ResetPassword = () => {
           <Button
             type="submit"
             disabled={isLoading}
-            className="w-full h-11 font-semi-bold text-sm bg-[#ea580c] hover:bg-[#d44f0a] text-white flex items-center justify-center gap-2 rounded-md transition-colors mt-6 cursor-pointer"
+            className="w-full h-11 font-semi-bold text-sm bg-[#1a7269] hover:bg-[#d44f0a] text-white flex items-center justify-center gap-2 rounded-md transition-colors mt-6 cursor-pointer"
           >
             {isLoading ? (
               <Loader2 size={18} className="animate-spin" />

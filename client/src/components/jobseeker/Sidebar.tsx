@@ -10,6 +10,7 @@ import {
   Users,
   Settings,
   LogOut,
+  UserRoundArrowLeft,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -37,6 +38,13 @@ const NAV_ITEMS = [
     badge: null,
     href: "/jobseeker/job-alerts",
   },
+  {
+    icon: UserRoundArrowLeft,
+    label: "Profile",
+    badge: null,
+    href: "/jobseeker/profile",
+  },
+
   { icon: Settings, label: "Settings", href: "/jobseeker/settings" },
 ];
 
@@ -61,7 +69,6 @@ const Sidebar = ({ collapsed, mobileOpen, setMobileOpen }: SidebarProps) => {
         />
       )}
 
-      {/* 1. YAHAN CHANGES KIYE HAIN: Background aur Border ko light/dark responsive banaya */}
       <aside
         className={`
           fixed top-0 left-0 h-full z-30 flex flex-col
@@ -72,13 +79,11 @@ const Sidebar = ({ collapsed, mobileOpen, setMobileOpen }: SidebarProps) => {
           ${mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
         `}
       >
-        {/* Header Border matching sync */}
         <div className="flex items-center gap-3 px-4 h-15 border-b border-slate-100 dark:border-white/5 shrink-0">
           <div className="h-8 w-8 bg-[#09b89b] flex items-center justify-center rounded-sm">
             <img src="../logo.png" alt="" />
           </div>
           {!collapsed && (
-            // Text color change text-slate-800 to text-white
             <span className="text-slate-800 dark:text-white font-semibold text-sm tracking-wide truncate">
               JobSpark
             </span>
@@ -123,7 +128,6 @@ const Sidebar = ({ collapsed, mobileOpen, setMobileOpen }: SidebarProps) => {
                   </span>
                 )}
 
-                {/* Tooltip styles handled for light mode */}
                 {collapsed && (
                   <span className="absolute left-full ml-2 px-2 py-1 bg-slate-900 dark:bg-[#1e2130] text-white text-xs rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-50 border border-slate-800 dark:border-white/10 shadow-sm">
                     {label}
@@ -135,7 +139,6 @@ const Sidebar = ({ collapsed, mobileOpen, setMobileOpen }: SidebarProps) => {
           })}
         </nav>
 
-        {/* Bottom items segment border adjustment */}
         <div className="px-2 pb-4 space-y-0.5 border-t border-slate-100 dark:border-white/5 pt-3 shrink-0">
           {BOTTOM_ITEMS.map(({ icon: Icon, label, href }) => (
             <Link

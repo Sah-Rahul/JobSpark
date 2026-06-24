@@ -32,7 +32,7 @@ const ForgetPassword = () => {
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 sm:p-6 lg:p-8 font-sans">
       <div className="w-full max-w-md bg-white rounded-2xl border border-slate-100 shadow-sm p-6 sm:p-10 space-y-8">
         <div className="flex items-center gap-2">
-          <div className="bg-[#ea580c] p-1.5 rounded-lg text-white">
+          <div className="bg-[#1a7269] p-1.5 rounded-lg text-white">
             <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
               <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z" />
             </svg>
@@ -53,7 +53,7 @@ const ForgetPassword = () => {
             Go back to{" "}
             <Link
               href="/auth/register"
-              className="text-[#1a73e8] hover:text-[#ea580c] transition ease-in duration-300 font-medium hover:underline"
+              className="text-[#1a73e8] hover:text-[#1a7269] transition ease-in duration-300 font-medium hover:underline"
             >
               Sign in
             </Link>
@@ -63,7 +63,7 @@ const ForgetPassword = () => {
             Don’t have account{" "}
             <Link
               href="/auth/register"
-              className="text-[#1a73e8] hover:text-[#ea580c] transition ease-in duration-300 font-medium hover:underline"
+              className="text-[#1a73e8] hover:text-[#1a7269] transition ease-in duration-300 font-medium hover:underline"
             >
               create Account
             </Link>
@@ -84,7 +84,7 @@ const ForgetPassword = () => {
 
           <Button
             type="submit"
-            className="w-full h-11 font-bold bg-[#ea580c] hover:bg-[#d44f0a] text-white   flex items-center justify-center gap-2 rounded-md transition-colors mt-6 cursor-pointer"
+            className="w-full h-11 font-bold bg-[#1a7269] hover:bg-[#1a7269] text-white   flex items-center justify-center gap-2 rounded-md transition-colors mt-6 cursor-pointer"
           >
             {isLoading ? "Sending..." : "Reset password"}
 
@@ -92,13 +92,7 @@ const ForgetPassword = () => {
           </Button>
         </form>
 
-        <div className="relative flex py-2 items-center">
-          <div className="grow border-t border-slate-200"></div>
-          <span className="shrink mx-4 text-xs text-slate-400 font-medium">
-            or
-          </span>
-          <div className="grow border-t border-slate-200"></div>
-        </div>
+         
       </div>
     </div>
   );

@@ -42,7 +42,6 @@ authRoutes.post(
   authController.resetPassword,
 );
 
-
 authRoutes.post(
   "/change-password",
   isAuthenticated,

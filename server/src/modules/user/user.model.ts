@@ -1,73 +1,20 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { AccountStatus, UserRole } from "../../enum/user.enum";
+import { Education, Experience } from "../../constant/user.constant";
+import { ICvResume, ISocialLink, IUser } from "../../@types/user.types";
 
-interface ICvResume {
-  name: string;
-  url: string;
-  publicId: string;
-  size: string;
-  uploadedAt: Date;
-}
+const cvResumeSchema = new Schema<ICvResume>({
+  name: { type: String, required: true },
+  url: { type: String, required: true },
+  publicId: { type: String, required: true },
+  size: { type: String, required: true },
+  uploadedAt: { type: Date, default: Date.now },
+});
 
-interface ISocialLink {
-  platform: string;
-  url: string;
-}
-
-export interface IUser extends Document {
-  fullName: string;
-  email: string;
-  password: string;
-
-  role: UserRole;
-  status: AccountStatus;
-
-  avatar?: string;
-  publicId?: string;
-
-  isEmailVerified: boolean;
-  isWelcomeEmailSent: boolean;
-
-  emailVerificationToken?: string;
-  emailVerificationExpires?: Date;
-
-  education?: string;
-  experience?: string;
-
-  title?: string;
-  cvResumes?: ICvResume[];
-  socialLinks?: ISocialLink[];
-
-  nationality?: string;
-  biography?: string;
-
-  passwordResetToken?: string;
-  passwordResetExpires?: Date;
-
-  lastLogin?: Date;
-
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-const cvResumeSchema = new Schema<ICvResume>(
-  {
-    name: { type: String, required: true },
-    url: { type: String, required: true },
-    publicId: { type: String, required: true },
-    size: { type: String, required: true },
-    uploadedAt: { type: Date, default: Date.now },
-  },
-  { _id: false },
-);
-
-const socialLinkSchema = new Schema<ISocialLink>(
-  {
-    platform: { type: String, required: true },
-    url: { type: String, required: true },
-  },
-  { _id: false },
-);
+const socialLinkSchema = new Schema<ISocialLink>({
+  platform: { type: String, required: true },
+  url: { type: String, required: true },
+});
 
 const userSchema = new Schema<IUser>(
   {
@@ -103,6 +50,12 @@ const userSchema = new Schema<IUser>(
       default: AccountStatus.PENDING,
     },
 
+    company: {
+      type: Schema.Types.ObjectId,
+      ref: "Company",
+      default: null,
+    },
+
     avatar: { type: String },
     publicId: { type: String },
 
@@ -112,8 +65,16 @@ const userSchema = new Schema<IUser>(
     emailVerificationToken: { type: String, select: false },
     emailVerificationExpires: { type: Date, select: false },
 
-    education: { type: String },
-    experience: { type: String },
+    education: {
+      type: String,
+      enum: Object.values(Education),
+    },
+
+    experience: {
+      type: String,
+      enum: Object.values(Experience),
+    },
+
     title: { type: String },
 
     cvResumes: { type: [cvResumeSchema], default: [] },

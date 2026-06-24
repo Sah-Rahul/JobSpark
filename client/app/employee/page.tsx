@@ -1,7 +1,7 @@
 import Dashboard from "@/src/components/employee/Dashboard";
 
-const page = () => {
+const DashboardRoute = () => {
   return <Dashboard />;
 };
 
-export default page;
+export default DashboardRoute;
